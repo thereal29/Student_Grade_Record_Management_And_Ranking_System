@@ -1,0 +1,17 @@
+.viewBTN{
+    background-color: #05300e;
+    color: #ffffff;
+    width: 60px;
+    height: 40px;
+    margin:auto;
+    border-radius: 7px;
+    font-weight: bold;
+    font-size: 14px;
+    transition: ease-out 0.3s;
+}
+.viewBTN:hover{
+    box-shadow: inset 150px 0 0 0 rgb(255, 255, 255);
+    cursor: pointer;
+    color: #05300e;
+    border: 1px solid #05300e;
+}
