@@ -25,7 +25,7 @@
                             </div>
                             <div class="student-profile-head">
                                 <div class="profile-bg-img">
-                                    <img src="{{ URL::to('assets/img/profile-bg.jpg') }}" alt="Profile">
+                                    <img src="{{ URL::to('assets/img/profile-cover.jpg') }}" alt="Profile">
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-4 col-md-4">
@@ -41,7 +41,7 @@
                                                 </div>
                                             </div>
                                             <div class="names-profiles">
-                                                <h4>{{ $details->firstname }} {{ $details->lastname }}</h4>
+                                                <h4>{{ $details->sfname }} {{ $details->slname }}</h4>
                                                 <h5>{{ $details->grade_level }} {{ $details->section }}</h5>
                                             </div>
                                         </div>
@@ -70,7 +70,7 @@
                                             </div>
                                             <div class="views-personal">
                                                 <h4>Name</h4>
-                                                <h5>{{ $details->firstname }} {{ $details->lastname }}</h5>
+                                                <h5>{{ $details->sfname }} {{ $details->slname }}</h5>
                                             </div>
                                         </div>
                                         <div class="personal-activity">

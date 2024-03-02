@@ -22,18 +22,18 @@ class ClassSeeder extends Seeder
         
         $class = Classes::create([
             'student_subject_id' => '1',
-            'faculty_id' => '2',
+            'faculty_id' => '3',
             'sy_id' => '1',
         ]);
 
         $class_advisory = ClassAdvisory::create([
-            'faculty_id' => '2',
+            'faculty_id' => '3',
             'glevel_section_id' => '1',
             'sy_id' => '1',
         ]);
         $class = Classes::create([
             'student_subject_id' => '2',
-            'faculty_id' => '3',
+            'faculty_id' => '4',
             'sy_id' => '1',
         ]);
     }

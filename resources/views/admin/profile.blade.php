@@ -20,14 +20,14 @@
                     <div class="row align-items-center">
                         <div class="col-auto profile-image">
                             <a href="#">
-                                <img class="rounded-circle" alt="{{ Session::get('name') }}" src="/images/{{ Session::get('avatar') }}">
+                                <img class="rounded-circle" alt="{{ Session::get('name') }}" src="{{ Storage::url('admin-photos/'.Session::get('avatar')) }}">
                             </a>
                         </div>
                         <div class="col ms-md-n2 profile-user-info">
                             <h6 class="text-muted">{{ $details->university_number }}</h6>
                             <h4 class="user-name mb-0">{{ $details->firstname . ' ' .$details->lastname }}</h4>
                             <h6 class="text-muted">{{ Auth::user()->role }}</h6>
-                            <div class="user-Location"><i class="fas fa-map-marker-alt"></i>{{ $details->email }}</div>
+                            <div class="user-Location"><i class="fas fa-map-marker-alt"></i> {{ $details->email }}</div>
                         </div>
                         <div class="col-auto profile-btn">
                             <a href="" class="btn btn-primary">Edit</a>

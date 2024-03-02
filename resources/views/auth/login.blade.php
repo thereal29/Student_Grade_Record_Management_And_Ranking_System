@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Login</title>
+    <title>Student Grade Record Management And Ranking System</title>
     <link rel="shortcut icon" href="{{ URL::to('assets/img/favicon.png') }}">
     <link rel="stylesheet" href="{{ URL::to('assets/plugins/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ URL::to('assets/plugins/feather/feather.css') }}">
@@ -32,15 +32,16 @@
                     {!! Toastr::message() !!}
                     <div class="login-right">
                         <div class="login-right-wrap">
-                            <h1>Welcome to SGRMRS</h1>
-                            <p><a style="font-weight:bold; color: #05300e;" href="{{ route('welcome') }}">VSU-Integrated High School</a></p>
+                        <img style="max-width:100%; margin-top:-15px;" class="img-fluid mb-3" src="{{ URL::to('assets/img/pangasugan.png') }}" alt="Logo">
+                            <h1 class="text-center">Welcome to SGRMRS</h1>
+                            <p class="text-center"><a style="font-weight:bold; color: #05300e;" href="{{ route('welcome') }}">VSU-Integrated High School</a></p>
                             <p class="account-subtitle">Need an account? <a href="{{ route('register') }}">Sign Up</a></p>
                             <h2>Sign in</h2>
                             <form action="{{ route('login') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
                                     <label>Email<span class="login-danger">*</span></label>
-                                    <input type="email" class="form-control @error('email') is-invalid @enderror" name="email">
+                                    <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}">
                                     <span class="profile-views"><i class="fas fa-envelope"></i></span>
                                 </div>
                                 <div class="form-group">
@@ -58,7 +59,7 @@
                                     <a href="forgot-password.html">Forgot Password?</a>
                                 </div>
                                 <div class="form-group">
-                                    <button class="btn btn-primary btn-block" style="background-color: #FFD700; color:#05300e; border:none;" type="submit">Login</button>
+                                    <button class="btn btn-primary btn-block" style="background-color: #05300e; color:#fff; border:none;" type="submit">Login</button>
                                 </div>
                             </form>
                             <div class="login-or">
@@ -71,6 +72,7 @@
                                 <a href="#"><i class="fab fa-twitter"></i></a>
                                 <a href="#"><i class="fab fa-linkedin-in"></i></a>
                             </div>
+
                         </div>
                     </div>
                 </div>

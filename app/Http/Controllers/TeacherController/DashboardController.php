@@ -24,6 +24,6 @@ class DashboardController extends Controller
         $subjects = Classes::select('*')->join('student_subject', 'student_subject.id', '=', 'class.student_subject_id')->join('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class.faculty_id')->join('student_personal_details', 'student_personal_details.id', '=', 'student_subject.student_id')->join('school_year', 'school_year.id', '=', 'class.sy_id')->where('class.faculty_id', $user_id)->where('school_year.from_year', $selSY)->get();
         $studentCTR = $students->count();
         $subjectCTR = $subjects->count();
-        return view('teacher.dashboard', compact('studentCTR','subjectCTR'));
+        return view('faculty.dashboard', compact('studentCTR','subjectCTR'));
     }
 }

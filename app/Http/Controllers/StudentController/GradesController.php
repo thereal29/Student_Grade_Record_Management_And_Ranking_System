@@ -12,7 +12,7 @@ class GradesController extends Controller
         $user_id = auth()->user()->id;
         $details = StudentUser::join('student_user_mapping', 'student_user_mapping.student_id', '=', 'student_personal_details.id')->join('users', 'users.id', '=', 'student_user_mapping.user_id')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->where('users.id', $user_id)->first();
         $currGrade = $details->grade_level;
-        return view('student.grade.index', compact('currGrade'));
+        return view('student.modules.grades.index', compact('currGrade'));
     }
     public function fetchGrades(Request $request){
         $user_id = auth()->user()->id;
@@ -26,8 +26,8 @@ class GradesController extends Controller
         }
         $query = '';
         if($students->count() > 0){
-            $query .= '<table  class="table table-striped" cellspacing="0" id="table">
-            <thead>
+            $query .= '<table class="table border-0 star-student table-hover table-center mb-0 datatables table-striped">
+            <thead class="student-thread">
                 <tr>
                     <th></th>
                     <th></th>

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreign('glevel_section_id')->references('id')->on('student_gradelevel_section');
             $table->integer('age');
             $table->enum('gender', ['Male', 'Female']);
-            $table->string('phone_number', 50);
+            $table->string('phone_number', 50)->nullable();
             $table->date('birth_date');
             $table->string('home_address', 100);
             $table->string('parent_name', 100);

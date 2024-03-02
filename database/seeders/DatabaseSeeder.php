@@ -27,9 +27,10 @@ class DatabaseSeeder extends Seeder
         $this->call(GradeSectionSeeder::class);
         $this->call(TeacherSeeder::class);
         $this->call(CoCurricularActivitySeeder::class);
-        $this->call(StudentTableSeeder::class);
-        $this->call(GradePerSubjectSeeder::class);
-        $this->call(ClassSeeder::class);
+        $this->call(SubjectTableSeeder::class);
+        // $this->call(StudentTableSeeder::class);
+        // $this->call(GradePerSubjectSeeder::class);
+        // $this->call(ClassSeeder::class);
     }
 
 }

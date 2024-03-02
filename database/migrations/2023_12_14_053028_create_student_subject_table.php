@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreign('student_id')->references('id')->on('student_personal_details');
             $table->foreignId('sy_id');
             $table->foreign('sy_id')->references('id')->on('school_year');
+            $table->string('status');
             $table->timestamps();
         });
     }

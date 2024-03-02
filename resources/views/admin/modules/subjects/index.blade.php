@@ -17,32 +17,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="student-group-form">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search by ID ...">
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search by Name ...">
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search by Class ...">
-                        </div>
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="search-student-btn">
-                            <button type="btn" class="btn btn-primary">Search</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card card-table">
@@ -54,7 +28,7 @@
                                     </div>
                                     <div class="col-auto text-end float-end ms-auto download-grp">
                                         <a href="#" class="btn btn-outline-primary me-2">
-                                            <i class="fas fa-download"></i> Download
+                                            <i class="fas fa-print"></i> Print
                                         </a>
                                         <a  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addnewcurriculum">
                                             <i class="fas fa-plus"></i>
@@ -129,15 +103,11 @@
             </div>
         </div>
     </div>
-
+    
     @section('script')
         {{-- delete js --}}
         <script>
-            $(document).on('click','.delete',function()
-            {
-                var _this = $(this).parents('tr');
-                $('.e_subject_id').val(_this.find('.subject_id').text());
-            });
+            
         </script>
         <script>
             $(document).ready(function(){
@@ -145,6 +115,42 @@
                 $("#gradelevel").on('change', function() {
                     fetchSubject();
                 });
+
+                $(document).on('click', '.delete_subject', function(e) {
+                e.preventDefault();
+                let id = $(this).attr('id');
+                let csrf = '{{ csrf_token() }}';
+                Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to retrieve this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#05300e',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                    url: '{{ route('deleteSubject') }}',
+                    method: 'delete',
+                    data: {
+                        id: id,
+                        _token: csrf
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        Swal.fire(
+                        'Deleted!',
+                        'Subject  has been deleted.',
+                        'success'
+                        )
+                        fetchSubject();
+                    }
+                    });
+                }
+                })
+            });
+
                     function fetchSubject(){
                         var gradelevel = $('#gradelevel').val();
                         $.ajax({

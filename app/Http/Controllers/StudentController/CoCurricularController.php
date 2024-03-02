@@ -32,8 +32,9 @@ class CoCurricularController extends Controller
             $activityList = CoCurricularDetails::join('co_curricular_activity', 'co_curricular_activity.id', '=', 'co_curricular_activity_details.cocurricular_id')->join('cocurricular_activity_type', 'cocurricular_activity_type.id', '=', 'co_curricular_activity.typeID')->join('cocurricular_activity_subtype', 'cocurricular_activity_subtype.id', '=', 'co_curricular_activity.subtypeID')->leftJoin('cocurricular_activity_award_scope', 'cocurricular_activity_award_scope.id', '=', 'co_curricular_activity.award_scopeID')->where('co_curricular_activity_details.student_id', $studentID->id)->get();
         }
         $point = CoCurricularDetails::select(DB::raw('sum(partialtotalPoints) AS sumTotal'))->groupBy('student_id')->first();
-        $percentage = $point ? $point->sumTotal * .10 : '';
-        return view('student.co_curricular_activity.index', compact('activityList', 'type', 'subtype', 'awardscope', 'point', 'percentage'));
+        $percentageTemp = $point ? $point->sumTotal * .10 : 0;
+        $percentage = number_format($percentageTemp, 2, '.', ',');
+        return view('student.modules.co_curricular_activity.index', compact('activityList', 'type', 'subtype', 'awardscope', 'point', 'percentage'));
     }
     public function fetchActivity(Request $request){
         $user_id = auth()->user()->id;
@@ -46,19 +47,20 @@ class CoCurricularController extends Controller
             $activities = CoCurricularDetails::select('*', 'co_curricular_activity_details.id as cid', 'co_curricular_activity.id as cc_id')->join('co_curricular_activity', 'co_curricular_activity.id', '=', 'co_curricular_activity_details.cocurricular_id')->join('cocurricular_activity_type', 'cocurricular_activity_type.id', '=', 'co_curricular_activity.typeID')->join('cocurricular_activity_subtype', 'cocurricular_activity_subtype.id', '=', 'co_curricular_activity.subtypeID')->leftJoin('cocurricular_activity_award_scope', 'cocurricular_activity_award_scope.id', '=', 'co_curricular_activity.award_scopeID')->where('co_curricular_activity_details.student_id', $studentID->id)->get();
             $point = CoCurricularDetails::select(DB::raw('sum(partialtotalPoints) AS sumTotal'))->groupBy('student_id')->first();
         }
-        $percentage = $point ? $point->sumTotal * .10 : 0;
+        $percentageTemp = $point ? $point->sumTotal * .10 : 0;
+        $percentage = number_format($percentageTemp, 2, '.', ',');
         $query= '';
         if($activities->count() >0){
-            $query .= '<table id="tableData" class="table table-bordered table-striped display responsive" style="width:100%!important;">
-            <thead id="column_name" class="table-dark">
+            $query .= '<table class="table border-0 star-student table-hover table-center mb-0 datatables table-striped">
+            <thead class="student-thread">
                 <tr>
-                    <th style="font-size:14px; font-weight:bold; text-align:center;">Type of Activity</th>
-                    <th style="font-size:14px; font-weight:bold; text-align:center;">Category</th>
-                    <th style="font-size:14px; font-weight:bold; text-align:center;">Awards/Scope</th>
-                    <th style="font-size:14px; font-weight:bold; text-align:center;">Points</th>
-                    <th style="font-size:14px; font-weight:bold; text-align:center;">Status</th>
-                    <th style="font-size:14px; font-weight:bold; text-align:center;">Proof</th>
-                    <th style="font-size:14px; font-weight:bold; text-align:center;">Action</th>
+                    <th>Type of Activity</th>
+                    <th>Category</th>
+                    <th>Awards/Scope</th>
+                    <th>Points</th>
+                    <th>Status</th>
+                    <th>Proof</th>
+                    <th>Action</th>
 
                 </tr>
             </thead>
@@ -71,13 +73,19 @@ class CoCurricularController extends Controller
                     <td>'. $activity->partialtotalPoints .'</td>
                     <td>'. $activity->status .'</td>
                     <td class="text-center">
-                    <a href=""><i class="bx bxs-file-doc" style="color:#05300e; text-decoration:none;" title="Add File"></i></a>
+                    <a href=""><i class="feather-file" style="color:#05300e; text-decoration:none;" title="Add File"></i></a>
                     </td>
-                    <td class="text-center">
-                    <input name="_method" type="hidden" id="actID" value="' . $activity->cid . '">
-                        <a type="button" id="' . $activity->cc_id . '" class="text-danger mx-1 editIcon" href="#" data-bs-toggle="modal" data-bs-target="edit"><i class="fa fa-edit mr-2" style="color:#05300e; text-decoration:none;" title="Edit Co Curricular Activity"></i></a>
-                        <a href="#" id="' . $activity->cid . '" class="text-danger mx-1 deleteIcon"><i class="fa fa-trash" style="color:#05300e; text-decoration:none;" title="Delete Co Curricular Activity"></i></a>
-                    </td>
+                    <td class="text-end">
+                        <input name="_method" type="hidden" id="actID" value="' . $activity->cid . '">
+                            <div class="actions">
+                                <a id="' . $activity->cc_id . '" href="" class="btn btn-sm bg-danger-light">
+                                    <i class="feather-edit"></i>
+                                </a>
+                                <a id="' . $activity->cid . '" class="btn btn-sm bg-danger-light delete deleteIcon" data-bs-toggle="modal" data-bs-target="#delete">
+                                    <i class="fe fe-trash-2"></i>
+                                </a>
+                            </div>
+                        </td>
                 </tr>';
             }
             $query .= '</tbody></table>';

@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Student Grade Record Management And Ranking System</title>
     <link rel="shortcut icon" href="{{ URL::to('assets/img/favicon.png') }}">
     <link rel="stylesheet" href="{{ URL::to('assets/plugins/bootstrap/css/bootstrap.min.css') }}">
@@ -18,6 +19,9 @@
     <link rel="stylesheet" href="{{ URL::to('assets/plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ URL::to('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ URL::to('assets/css/app.css') }}">
+    <link href="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css
+" rel="stylesheet">
 	{{-- message toastr --}}
 	<link rel="stylesheet" href="{{ URL::to('assets/css/toastr.min.css') }}">
 	<script src="{{ URL::to('assets/js/toastr_jquery.min.js') }}"></script>
@@ -153,7 +157,13 @@
                 <li class="nav-item dropdown has-arrow new-user-menus">
                     <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                         <span class="user-img">
-                            <img class="rounded-circle" src="/images/{{ Session::get('avatar') }}" width="31"alt="{{ Session::get('name') }}">
+                            @if(auth()->user()->role == 'Super Administrator' || auth()->user()->role == 'Administrator')
+                            <img class="rounded-circle" src="{{ Storage::url('admin-photos/'.Session::get('avatar')) }}" width="31"alt="{{ Session::get('name') }}">
+                            @elseif(auth()->user()->role == 'Faculty')
+                            <img class="rounded-circle" src="{{ Storage::url('faculty-photos/'.Session::get('avatar')) }}" width="31"alt="{{ Session::get('name') }}">
+                            @else
+                            <img class="rounded-circle" src="{{ Storage::url('student-photos/'.Session::get('avatar')) }}" width="31"alt="{{ Session::get('name') }}">
+                            @endif
                             <div class="user-text">
                                 <h6>{{ Session::get('firstname') }} {{ Session::get('lastname') }}</h6>
                                 <p class="text-muted mb-0">{{ Auth::user()->role }}</p>
@@ -163,7 +173,13 @@
                     <div class="dropdown-menu">
                         <div class="user-header">
                             <div class="avatar avatar-sm">
-                                <img src="/images/{{ Session::get('avatar') }}" alt="{{ Session::get('name') }}" class="avatar-img rounded-circle">
+                            @if(auth()->user()->role == 'Super Administrator' || auth()->user()->role == 'Administrator')
+                                <img class="rounded-circle" src="{{ Storage::url('admin-photos/'.Session::get('avatar')) }}" width="31"alt="{{ Session::get('name') }}">
+                                @elseif(auth()->user()->role == 'Faculty')
+                                <img class="rounded-circle" src="{{ Storage::url('faculty-photos/'.Session::get('avatar')) }}" width="31"alt="{{ Session::get('name') }}">
+                                @else
+                                <img class="rounded-circle" src="{{ Storage::url('student-photos/'.Session::get('avatar')) }}" width="31"alt="{{ Session::get('name') }}">
+                                @endif
                             </div>
                             <div class="user-text">
                             <h6>{{ Session::get('firstname') }} {{ Session::get('lastname') }}</h6>
@@ -182,12 +198,12 @@
 		{{-- content page --}}
         @yield('content')
         @include('layouts.modal')
-        <footer>
-            <p>Copyright ©  <?php echo date('Y'); ?> Visayas State University - Integrated High School.</p>
-        </footer>
+        
     
     </div>
-
+    <footer>
+            <p>Copyright ©  <?php echo date('Y'); ?> VSU-IHS Coded by Daryl Piamonte.</p>
+    </footer>
     <script src="{{ URL::to('assets/js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ URL::to('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ URL::to('assets/js/feather.min.js') }}"></script>
@@ -202,7 +218,10 @@
     <script src="{{ URL::to('assets/plugins/datatables/datatables.min.js') }}"></script>
     <script src="{{ URL::to('assets/plugins/select2/js/select2.min.js') }}"></script>
     <script src="{{ URL::to('assets/js/script.js') }}"></script>
-    @if( (Session::has('alert-success')) && (auth()->user()->role == 'Administrator' || auth()->user()->role == 'Adviser' || auth()->user()->role == 'Subject Teacher'))
+    <script src="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js
+"></script>
+    @if( (Session::has('alert-success')) && (auth()->user()->role == 'Super Administrator' || auth()->user()->role == 'Administrator' || auth()->user()->role == 'Faculty'))
    <script type="text/javascript">
       $(document).ready(function() {
         $('#school_year').modal('show');
@@ -212,9 +231,18 @@
     @endif
     <script>
   $(document).ready(function() {
+    $('.add-subject').select2();
+    $('.add-subject').select2({
+    minimumResultsForSearch: Infinity,
+    dropdownParent: $('#addnewcurriculum'),
+    });
     $('.normselect').select2();
     $('.normselect').select2({
     minimumResultsForSearch: Infinity
+    });
+    $('.normselect2').select2();
+    $('.normselect2').select2({
+        'placeholder' : 'Select Class Advisory',
     });
     $('.syselect1').select2();
     $('.syselect1').select2({
@@ -226,7 +254,23 @@
     minimumResultsForSearch: Infinity,
     dropdownParent: $('#changeSY')
     });
+
+    
+
   });
+</script>
+<script>
+  const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-right',
+  iconColor: 'white',
+  customClass: {
+    popup: 'colored-toast',
+  },
+  showConfirmButton: false,
+  timer: 1500,
+  timerProgressBar: true,
+})
 </script>
     @yield('script')
     <script>
@@ -235,7 +279,7 @@
                 closeOnSelect: false
             });
         });
-    </script>
+</script>
 
 </body>
 </html>

@@ -20,42 +20,6 @@ class StudentTableSeeder extends Seeder
     public function run()
     {
         $users = User::create([
-            'username' => 'darylpiamonte',
-            'password' => Hash::make('piamonte'),
-            'email' => 'darylpiamonte@gmail.com',
-            'role' => '6',
-            'sy_id' => '1',
-            'avatar' => 'default-male.png',
-            
-        ]);
-        $student_personal_details = StudentUser::create([
-            'firstname' => 'Daryl',
-            'middlename' => 'Acampado',
-            'lastname' => 'Piamonte',
-            'lrn_number' => '123456789123',
-            'gender' => 'Male',
-            'age' => '22',
-            'glevel_section_id' => '1',
-            'birth_date' => '2000-12-29',
-            'home_address' => 'Brgy. Guadalupe, Baybay City, Leyte',
-            'phone_number' => '09123456789',
-            'parent_name' => 'Norberta A. Piamonte',
-            'parent_address' => 'Brgy. Guadalupe, Baybay City, Leyte',
-            'previous_school_graduated' => 'San Juan National High School',
-            'year_graduated' => '2016',
-            'previous_school_average' => '99.00',
-            
-        ]);
-        $student_user_mapping = StudentUserMapping::create([
-            'student_id' => $student_personal_details->id,
-            'user_id' => $users->id,
-        ]);
-        $student_advisory = StudentAdvisory::create([
-            'student_id' => $student_personal_details->id,
-            'adviser_id' => '2',
-        ]);
-
-        $users = User::create([
             'username' => 'francis',
             'password' => Hash::make('batohinog'),
             'email' => 'francis@gmail.com',
@@ -70,7 +34,7 @@ class StudentTableSeeder extends Seeder
             'lrn_number' => '123456789126',
             'gender' => 'Male',
             'age' => '21',
-            'glevel_section_id' => '2',
+            'glevel_section_id' => '4',
             'birth_date' => '2003-1-12',
             'home_address' => 'Brgy. Punong, Bato, Leyte',
             'phone_number' => '09123456789',
@@ -87,14 +51,14 @@ class StudentTableSeeder extends Seeder
         ]);
         $student_advisory = StudentAdvisory::create([
             'student_id' => $student_personal_details->id,
-            'adviser_id' => '2',
+            'adviser_id' => '3',
         ]);
 
         $users = User::create([
             'username' => 'neil',
-            'password' => Hash::make('lagaret'),
+            'password' => Hash::make('lagaretneil'),
             'email' => 'neil@gmail.com',
-            'role' => '6',
+            'role' => '7',
             'sy_id' => '1',
             'avatar' => 'default-male.png',
         ]);
@@ -105,7 +69,7 @@ class StudentTableSeeder extends Seeder
             'lrn_number' => '123456789129',
             'gender' => 'Male',
             'age' => '20',
-            'glevel_section_id' => '3',
+            'glevel_section_id' => '6',
             'birth_date' => '2003-1-12',
             'home_address' => 'Brgy. Punong, Bato, Leyte',
             'phone_number' => '09123456789',
@@ -122,7 +86,7 @@ class StudentTableSeeder extends Seeder
         ]);
         $student_advisory = StudentAdvisory::create([
             'student_id' => $student_personal_details->id,
-            'adviser_id' => '2',
+            'adviser_id' => '3',
         ]);
         
     }

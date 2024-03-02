@@ -7,12 +7,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\UserRoles;
 use App\Models\User;
+use App\Models\SchoolYear;
 class UserController extends Controller
 {
     public function maincontent(){
 
-        $users = User::all();
-        return view('admin.users_list', compact('users'));
+        $SY = SchoolYear::all();
+        return view('admin.modules.', compact('users'));
     }
     public function filterRoles(Request $request){
         $roles = UserRoles::all();

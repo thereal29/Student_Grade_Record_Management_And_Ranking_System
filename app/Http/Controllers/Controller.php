@@ -11,6 +11,7 @@ use App\Models\CoCurricularType;
 use App\Models\CoCurricularSubType;
 use App\Models\CoCurricularAwardScope;
 use App\Models\SchoolYear;
+use App\Models\FacultyStaff;
 
 use Illuminate\Support\Facades\View;
 use Illuminate\Routing\Controller as BaseController;
@@ -33,6 +34,8 @@ class Controller extends BaseController
         $currSY = SchoolYear::select('*')->where('isCurrent', 1)->first();
         View::share('sy', $sy);
         View::share('currSY', $currSY);
+        $list_faculty = FacultyStaff::all();
+        View::share('list_faculty', $list_faculty);
     }
 
 }

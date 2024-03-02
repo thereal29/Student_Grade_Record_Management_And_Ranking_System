@@ -23,7 +23,7 @@ class TeacherSeeder extends Seeder
             'username' => 'judebrola',
             'password' => Hash::make('juderola'),
             'email' => 'judebrola@gmail.com',
-            'role' => '4',
+            'role' => '5',
             'sy_id' => '1',
             'avatar' => 'faculty-male.png',
             

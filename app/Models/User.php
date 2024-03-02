@@ -54,7 +54,7 @@ class User extends Authenticatable
         $roles = DB::table('user_roles')->pluck('description');
       //  dd($roles->all());
         return new Attribute(
-            get:fn($value) => ['', $roles[0], $roles[1], $roles[2], $roles[3], $roles[4], $roles[5], $roles[6], $roles[7]][$value],
+            get:fn($value) => ['', $roles[0], $roles[1], $roles[2], $roles[3], $roles[4], $roles[5], $roles[6]][$value],
         );
     }
     public function getAdmin(){

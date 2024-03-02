@@ -94,6 +94,7 @@ class GradePerSubjectSeeder extends Seeder
             'subject_id' => '1',
             'student_id' => '1',
             'sy_id' => '1',
+            'status' => 'Added',
         ]);
         
         
@@ -101,6 +102,7 @@ class GradePerSubjectSeeder extends Seeder
             'subject_id' => '3',
             'student_id' => '2',
             'sy_id' => '1',
+            'status' => 'Added',
         ]);
         $grade = Grade::create([
             'student_subject_id' => '1',

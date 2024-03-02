@@ -15,3 +15,61 @@
     color: #05300e;
     border: 1px solid #05300e;
 }
+/* Chrome, Safari, Edge, Opera */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.colored-toast.swal2-icon-success {
+    background-color: #a5dc86 !important;
+  }
+  
+  .colored-toast.swal2-icon-error {
+    background-color: #f27474 !important;
+  }
+  
+  .colored-toast.swal2-icon-warning {
+    background-color: #f8bb86 !important;
+  }
+  
+  .colored-toast.swal2-icon-info {
+    background-color: #3fc3ee !important;
+  }
+  
+  .colored-toast.swal2-icon-question {
+    background-color: #87adbd !important;
+  }
+  .select2 {
+  width:100%!important;
+  }
+
+  .info-header{
+    border-radius: 6px;
+    padding: 15px;
+    background: #05300e;
+    color: white;
+    width: 98%;
+    margin: -25px auto 10px;
+    box-shadow: 0 10px 10px 0 rgb(0 0 0 / 16%), 
+    0 10px 14px -1px rgb(0 0 0 / 30%), 
+    0 7px 10px 0 rgb(0 0 0 / 12%);
+    }
+    .swal2-popup .swal2-styled:focus {
+      box-shadow: none !important;
+  }
+  .swal2-popup .swal2-actions:not(.swal2-loading) .swal2-styled:hover {
+    background-color: #007bff !important;
+    
+  }
+  .text-error{
+    color: red;
+    font-size: clamp( .75rem, 0.87vw, 1vh)
+  }
+

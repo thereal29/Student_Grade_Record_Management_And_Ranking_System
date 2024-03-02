@@ -19,26 +19,9 @@
             {{-- message --}}
             {!! Toastr::message() !!}
             <div class="student-group-form">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search by ID ...">
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search by Name ...">
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search by Phone ...">
-                        </div>
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="search-student-btn">
-                            <button type="btn" class="btn btn-primary">Search</button>
-                        </div>
+                <div class="row align-items-center">
+                    <div class="col-auto ms-auto me-3 download-grp">
+                        <a type="button" class="btn btn-primary" style="float:right; background:#05300e; color:#fff;" href="{{ route('admin/student_record') }}"> Back</a>
                     </div>
                 </div>
             </div>
@@ -47,14 +30,23 @@
                     <div class="card card-table comman-shadow">
                         <div class="card-body">
                             <div class="page-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h3 class="page-title">Student Grades</h3>
+                                    </div>
+                                    <div class="col-auto text-end float-end ms-auto download-grp">
+                                        <a href="#" class="btn btn-outline-primary me-2"><i class="fas fa-print"></i> Print</a>
+                                        <a href="" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                                    </div>
+                                </div>
                                 <div class="row pb-3" style="border-bottom:2px solid #5e8e44;">
                                     <div class="col-md-6">
                                         <div class="row d-flex">
                                             <div class="col-md-12 m-0">
                                                 <small><small>Select Grade Level:</small></small>
                                             </div>
-                                            <div class="col-md-12 m-0">
-                                                <select name="gradelevel" id="gradelevel" data-placeholder="Select Grade Level" class="form-select d-flex normselect" >
+                                            <div class="col-md-9 m-0">
+                                                <select name="gradelevel" id="gradelevel" data-placeholder="Select Grade Level" class="form-control d-flex normselect" >
                                                     <option value=""></option>
                                                     <option value="Grade 7" {{$record->grade_level == 'Grade 7' ? 'selected' : ''}}> Grade 7</option>
                                                     <option value="Grade 8" {{$record->grade_level == 'Grade 8' ? 'selected' : ''}}> Grade 8</option>
@@ -67,7 +59,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6 m-0">                                                                  
-                                        <a type="button" class="btn btn-primary" style="float:right; background:#05300e; color:#fff;" href="{{ route('admin/student_record') }}"> Back</a>
+                                        
                                     </div>
                                 </div>
                                 <div class="col-md-12 mt-4">

@@ -17,9 +17,9 @@ class SubjectController extends Controller
     public function fetchSubjects(Request $request){
         $gradelevel = $request->gradelevel;
         if($gradelevel != null){
-            $subjects = DB::table('subject')->select('*','subject.id as sid')->where('grade_level', $gradelevel)->get();
+            $subjects = Subjects::select('*','subject.id as sid')->leftJoin('student_subject', 'student_subject.subject_id', 'subject.id')->leftJoin('class', 'class.student_subject_id', '=', 'student_subject.id')->leftJoin('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class.faculty_id')->where('grade_level', $gradelevel)->get();
         }else{
-            $subjects = DB::table('subject')->select('*','subject.id as sid')->get();
+            $subjects = Subjects::select('*','subject.id as sid')->leftJoin('student_subject', 'student_subject.subject_id', 'subject.id')->leftJoin('class', 'class.student_subject_id', '=', 'student_subject.id')->leftJoin('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class.faculty_id')->get();
         } 
         
         $query = '';
@@ -29,6 +29,7 @@ class SubjectController extends Controller
             <tr>
                 <th>Subject Code</th>
                 <th>Course Description</th>
+                <th>Teacher</th>
                 <th>Credits</th>
                 <th>Students Enrolled</th>
                 <th class="text-end">Action</th>
@@ -44,8 +45,13 @@ class SubjectController extends Controller
                 $totalStud = $tempQ ? $tempQ->totalstudents : '';
                 $query .= '<tr>
                     <td>'. $subject->subject_code .'</td>
-                    <td>'. $subject->subject_description .'</td>
-                    <td>'. $subject->credits .'</td>
+                    <td>'. $subject->subject_description .'</td>';
+                    if($subject->firstname != null){
+                        $query .= '<td>'. $subject->firstname.' '.$subject->lastname.'</td>';
+                    }else{
+                        $query .= '<td>None</td>';
+                    }
+                    $query .= '<td>'. $subject->credits .'</td>
                     <td>'. $totalStud;
                         if($totalStud != null){
                             if($totalStud > 1){
@@ -58,10 +64,10 @@ class SubjectController extends Controller
                         }
              $query .= '<td class="text-end">
                             <div class="actions">
-                                <a href="" class="btn btn-sm bg-danger-light">
+                                <a id="'.$subject->sid.'" class="btn btn-sm bg-danger-light">
                                     <i class="feather-edit"></i>
                                 </a>
-                                <a class="btn btn-sm bg-danger-light delete" data-bs-toggle="modal" data-bs-target="#delete">
+                                <a id="'.$subject->sid.'" class="btn btn-sm bg-danger-light delete_subject">
                                     <i class="fe fe-trash-2"></i>
                                 </a>
                             </div>

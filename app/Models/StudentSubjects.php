@@ -13,5 +13,6 @@ class StudentSubjects extends Model
         'class_id',
         'student_id',
         'sy_id',
+        'status',
     ];
 }

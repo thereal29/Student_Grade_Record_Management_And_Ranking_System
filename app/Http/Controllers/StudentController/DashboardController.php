@@ -9,6 +9,6 @@ class DashboardController extends Controller
 {
     public function index(){
         $role = auth()->user()->role;
-        return view('student.dashboard.index', compact('role'));
+        return view('student.dashboard', compact('role'));
     }
 }

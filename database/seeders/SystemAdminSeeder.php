@@ -41,5 +41,27 @@ class SystemAdminSeeder extends Seeder
             'faculty_staff_id' => $faculty_staff_details->id,
             'user_id' => $users->id,
         ]);
+        $users = User::create([
+            'username' => 'darylpiamonte',
+            'password' => Hash::make('piamonte'),
+            'email' => 'darylpiamonte@gmail.com',
+            'role' => '2',
+            'sy_id' => '1',
+            'avatar' => 'admin-male.png',
+            
+        ]);
+        $faculty_staff_details = FacultyStaff::create([
+            'university_number' => '123786128957',
+            'firstname' => 'Daryl',
+            'middlename' => 'Acampado',
+            'lastname' => 'Piamonte',
+            'gender' => 'Male',
+            'phone_number' => '09617053870',
+            'home_address' => 'Baybay City, Leyte', 
+        ]);
+        $faculty_staff_user_mapping = FacultyStaffUserMapping::create([
+            'faculty_staff_id' => $faculty_staff_details->id,
+            'user_id' => $users->id,
+        ]);
     }
 }

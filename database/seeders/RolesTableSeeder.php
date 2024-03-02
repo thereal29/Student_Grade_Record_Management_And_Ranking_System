@@ -16,6 +16,9 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         DB::table('user_roles')->insert([
+            'description' => 'Super Administrator',
+        ]);
+        DB::table('user_roles')->insert([
             'description' => 'Administrator',
         ]);
         DB::table('user_roles')->insert([
@@ -25,22 +28,13 @@ class RolesTableSeeder extends Seeder
             'description' => 'Guidance Facilitator',
         ]);
         DB::table('user_roles')->insert([
-            'description' => 'Adviser',
+            'description' => 'Faculty',
         ]);
         DB::table('user_roles')->insert([
-            'description' => 'Subject Teacher',
+            'description' => 'Junior High School Student',
         ]);
         DB::table('user_roles')->insert([
-            'description' => 'Non-graduating Junior High School',
-        ]);
-        DB::table('user_roles')->insert([
-            'description' => 'Graduating Junior High School student and qualified for honors',
-        ]);
-        DB::table('user_roles')->insert([
-            'description' => 'Non-graduating Senior High School student or non-qualified student for honors',
-        ]);
-        DB::table('user_roles')->insert([
-            'description' => 'Graduating Senior High School student and qualified for honors',
+            'description' => 'Senior High School Student',
         ]);
     }
 }
