@@ -64,7 +64,7 @@
                                     <div class="col-12 col-sm-4">
                                         <div class="form-group local-forms">
                                             <label>University Number <span class="login-danger">*</span></label>
-                                            <input class="form-control @error('university_number') is-invalid @enderror" type="number" name="university_number" placeholder="Enter University Number" value="{{ old('lrn_number') }}">
+                                            <input class="form-control @error('university_number') is-invalid @enderror" type="number" onKeyPress="if(this.value.length==12) return false;" name="university_number" placeholder="Enter University Number" value="{{ old('university_number') }}">
                                             @error('university_number')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -92,6 +92,28 @@
                                             <label>E-Mail <span class="login-danger">*</span></label>
                                             <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" placeholder="Enter Email Address" value="{{ old('email') }}">
                                             @error('email')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
+                                        <div class="form-group local-forms" style="z-index: 9999 !important; width: 100% !important;">
+                                            <label>Phone <span class="login-danger">*</span></label>
+                                            <input class="form-control @error('phone_number') is-invalid @enderror" onKeyPress="if(this.value.length==10) return false;" id="phone" type="number" name="phone_number" placeholder="Enter Phone Number" value="{{ old('phone_number') }}">
+                                            @error('phone_number')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
+                                        <div class="form-group local-forms">
+                                            <label>Home Address <span class="login-danger">*</span></label>
+                                            <input type="text" class="form-control @error('home_address') is-invalid @enderror" name="home_address" style="text-transform: capitalize;" placeholder="Enter Home Address" value="{{ old('home_address') }}">
+                                            @error('home_address')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>

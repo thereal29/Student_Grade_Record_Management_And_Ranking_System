@@ -112,6 +112,8 @@
                     dropdownParent: $('#editfacultyuser')
                     });
                     $('#email_faculty').val(response.email);
+                    $('#phone_faculty').val(response.phone_number);
+                    $('#home_address_faculty').val(response.home_address);
                 }
                 });
             });
@@ -167,6 +169,16 @@
                             $(".invalid-feedback-email").html('<small>'+ response.responseJSON.errors.email+'</small>');
                         }else{
                             $(".invalid-feedback-email").html('');
+                        }
+                        if(response.responseJSON.errors.phone_number){
+                            $(".invalid-feedback-phone").html('<small>'+ response.responseJSON.errors.phone_number+'</small>');
+                        }else{
+                            $(".invalid-feedback-phone").html('');
+                        }
+                        if(response.responseJSON.errors.home_address){
+                            $(".invalid-feedback-homeaddress").html('<small>'+ response.responseJSON.errors.home_address+'</small>');
+                        }else{
+                            $(".invalid-feedback-homeaddress").html('');
                         }
                     } 
                 });

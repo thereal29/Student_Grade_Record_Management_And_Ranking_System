@@ -61,6 +61,17 @@ input[type=number] {
     0 10px 14px -1px rgb(0 0 0 / 30%), 
     0 7px 10px 0 rgb(0 0 0 / 12%);
     }
+    .db-header{
+      border-radius: 6px;
+      padding: 15px;
+      background: #ffffff;
+      color: #05300e;
+      width: 98%;
+      margin: -25px auto 10px;
+      box-shadow: 0 10px 10px 0 rgb(0 0 0 / 16%), 
+      0 10px 14px -1px rgb(0 0 0 / 30%), 
+      0 7px 10px 0 rgb(0 0 0 / 12%);
+      }
     .swal2-popup .swal2-styled:focus {
       box-shadow: none !important;
   }
@@ -72,4 +83,63 @@ input[type=number] {
     color: red;
     font-size: clamp( .75rem, 0.87vw, 1vh)
   }
+  .intl-tel-input{
+    width: 100%;
+  }
+      
+  .iti {
+    width: 100%;
+  }
+
+  /* Dashboard Boxes */
+
+.circle-tile {
+  margin-bottom: 15px;
+  text-align: center;
+}
+.circle-tile-heading {
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 100%;
+  color: #FFFFFF;
+  height: 80px;
+  margin: 0 auto -40px;
+  position: relative;
+  transition: all 0.3s ease-in-out 0s;
+  width: 80px;
+}
+.tile-heading {
+  color: #FFFFFF;
+  border-radius: 5px;
+  height: 50px;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  font-size: clamp( .75rem, 0.87vw, 1vh);
+  background-color: #00330b;
+  margin: 0 auto -30px;
+  position: relative;
+  transition: all 0.3s ease-in-out 0s;
+  width: 80%;
+  text-transform: uppercase;
+  box-shadow: 0 10px 10px 0 rgba(77, 77, 77, 0.16), 
+  0 10px 14px -1px rgba(65, 65, 65, 0.3), 
+  0 7px 10px 0 rgba(83, 83, 83, 0.12);
+}
+.tile-content {
+  padding-top: 40px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+  background-color: #cecece;
+  box-shadow: 0 10px 10px 0 rgb(0 0 0 / 16%), 
+  0 10px 14px -1px rgb(0 0 0 / 30%), 
+  0 7px 10px 0 rgb(0 0 0 / 12%);
+}
+.tile-description {
+  font-style: italic;
+  font-size: clamp( 1rem, 0.87vw, 1vh);
+  color: #05300e;
+}
+.db-icon img{
+  width: 60px !important;
+}
 

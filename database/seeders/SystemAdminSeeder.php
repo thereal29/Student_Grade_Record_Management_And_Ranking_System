@@ -34,7 +34,7 @@ class SystemAdminSeeder extends Seeder
             'middlename' => 'Tejara',
             'lastname' => 'Tejara',
             'gender' => 'Male',
-            'phone_number' => '09123456789',
+            'phone_number' => '639123456789',
             'home_address' => 'Baybay City, Leyte', 
         ]);
         $faculty_staff_user_mapping = FacultyStaffUserMapping::create([
@@ -56,7 +56,7 @@ class SystemAdminSeeder extends Seeder
             'middlename' => 'Acampado',
             'lastname' => 'Piamonte',
             'gender' => 'Male',
-            'phone_number' => '09617053870',
+            'phone_number' => '639617053870',
             'home_address' => 'Baybay City, Leyte', 
         ]);
         $faculty_staff_user_mapping = FacultyStaffUserMapping::create([

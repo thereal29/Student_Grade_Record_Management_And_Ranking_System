@@ -58,6 +58,12 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-auto text-end float-end ms-auto">
+                                                <strong class="me-5">GPA:  </strong>
+                                                <small></small>
+                                        </div>
+                                    </div>
                                     <div class="col-md-6 m-0">                                                                  
                                         
                                     </div>

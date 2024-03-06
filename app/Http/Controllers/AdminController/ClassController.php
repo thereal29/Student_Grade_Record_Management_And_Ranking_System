@@ -6,20 +6,24 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\StudentUser;
 use App\Models\Subjects;
+use App\Models\Classes;
 use App\Models\Curriculum;
+use App\Models\SchoolYear;
 use App\Models\CurriculumGrades;
+use App\Models\StudentSubjects;
 use Illuminate\Support\Facades\DB;
-class SubjectController extends Controller
+use Brian2694\Toastr\Facades\Toastr;
+class ClassController extends Controller
 {
     public function index(){
-        return view('admin.modules.subjects.index');
+        return view('admin.modules.other_list.class.index');
     }
     public function fetchSubjects(Request $request){
         $gradelevel = $request->gradelevel;
         if($gradelevel != null){
-            $subjects = Subjects::select('*','subject.id as sid')->leftJoin('student_subject', 'student_subject.subject_id', 'subject.id')->leftJoin('class', 'class.student_subject_id', '=', 'student_subject.id')->leftJoin('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class.faculty_id')->where('grade_level', $gradelevel)->get();
+            $subjects = Subjects::select('*','subject.id as sid')->leftJoin('student_subject', 'student_subject.subject_id', 'subject.id')->leftJoin('class', 'class.subject_id', '=', 'subject.id')->leftJoin('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class.faculty_id')->groupBy('subject.id')->where('grade_level', $gradelevel)->get();
         }else{
-            $subjects = Subjects::select('*','subject.id as sid')->leftJoin('student_subject', 'student_subject.subject_id', 'subject.id')->leftJoin('class', 'class.student_subject_id', '=', 'student_subject.id')->leftJoin('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class.faculty_id')->get();
+            $subjects = Subjects::select('*','subject.id as sid')->leftJoin('student_subject', 'student_subject.subject_id', 'subject.id')->leftJoin('class', 'class.subject_id', '=', 'subject.id')->leftJoin('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class.faculty_id')->groupBy('subject.id')->get();
         } 
         
         $query = '';
@@ -64,10 +68,10 @@ class SubjectController extends Controller
                         }
              $query .= '<td class="text-end">
                             <div class="actions">
-                                <a id="'.$subject->sid.'" class="btn btn-sm bg-danger-light">
+                                <a id="'.$subject->sid.'" value="'.$totalStud.'" title="Assign Faculty" class="btn btn-sm bg-danger-light edit_subject">
                                     <i class="feather-edit"></i>
                                 </a>
-                                <a id="'.$subject->sid.'" class="btn btn-sm bg-danger-light delete_subject">
+                                <a id="'.$subject->sid.'" title="Delete Faculty" class="btn btn-sm bg-danger-light delete_subject">
                                     <i class="fe fe-trash-2"></i>
                                 </a>
                             </div>
@@ -86,12 +90,18 @@ class SubjectController extends Controller
         ]);
     }
     public function store(Request $request){
-        $curriculum = new Curriculum;
-        $curriculum->subject_code = $request->subjectcode;
-        $curriculum->subject_description = $request->subjectdesc;
-        $curriculum->credits = $request->credits;
-        $curriculum->grade_level = $request->gradelevel;
-        $curriculum->save();
+        $currentSY = SchoolYear::where('isCurrent', 1)->first();
+        $subject = new Subjects;
+        $subject->subject_code = $request->subjectcode;
+        $subject->subject_description = $request->subjectdesc;
+        $subject->credits = $request->credits;
+        $subject->grade_level = $request->gradelevel;
+        $subject->save();
+        $class = new Classes;
+        $class->subject_id = $subject->id;
+        $class->faculty_id = $request->faculty;
+        $class->sy_id = $currentSY->id;
+        $class->save();
         return response()->json([
             'status'=>'success',
             'message'=>'Subject Added Successfully.'
@@ -104,20 +114,44 @@ class SubjectController extends Controller
     }
     public function edit(Request $request){
         $id = $request->id;
-        $subject = Subjects::find($id);
+        $subject = Subjects::select('*', 'subject.id as sid', 'faculty_staff_personal_details.id as fid')->leftJoin('student_subject', 'student_subject.subject_id', '=', 'subject.id')->leftJoin('class', 'class.subject_id', '=', 'subject.id')->leftJoin('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class.faculty_id')->where('subject.id', $id)->first();
         return response()->json($subject);
     }
     public function update(Request $request){
-        $id = $request->id;
-        $curriculum = Subjects::find($request->cur_id);
-        $curriculum->subject_code = $request->subjectcode;
-        $curriculum->subject_description = $request->subjectdesc;
-        $curriculum->credits = $request->credits;
-        $curriculum->grade_level = $request->editgradelevel;
-        $curriculum->update();
-        return response()->json([
-            'status'=>'success',
-            'message'=>'Subject Updated Successfully.'
+        $request->validate([
+            'subject_code'   => 'required|string',
+            'subject_description'   => 'required|string',
+            'credits'   => 'required|numeric|between:0,99.99',
+            'grade_level'   => 'required|not_in:0',
+            'faculty' => 'required|not_in:0',
         ]);
+        DB::beginTransaction();
+            $id = $request->id;
+            $currentSY = SchoolYear::where('isCurrent', 1)->first();
+            $subject = Subjects::find($request->cur_id);
+            $subject->subject_code = $request->subject_code;
+            $subject->subject_description = $request->subject_description;
+            $subject->credits = $request->credits;
+            $subject->grade_level = $request->grade_level;
+            $subject->update();
+            $classCTR = Classes::where('class.subject_id', $request->cur_id)->count();
+            if($classCTR){
+                $class = Classes::where('class.subject_id', $request->cur_id)->first();
+                $class->subject_id = $request->cur_id;
+                $class->faculty_id = $request->faculty;
+                $class->sy_id = $currentSY->id;
+                $class->update();
+            }else{
+                $class = new Classes;
+                $class->subject_id = $request->cur_id;
+                $class->faculty_id = $request->faculty;
+                $class->sy_id = $currentSY->id;
+                $class->save();
+            }
+            DB::commit();
+            return response()->json([
+                'status'=>'success',
+                'message'=>'Subject Updated Successfully.'
+            ]);
     }
 }

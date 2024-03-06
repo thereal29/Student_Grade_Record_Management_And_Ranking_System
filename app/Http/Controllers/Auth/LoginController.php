@@ -16,6 +16,8 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Input;
 use App\Models\FacultyStaff;
 use App\Models\StudentUser;
+use App\Models\ClassAdvisory;
+use App\Models\Classes;
 
 class LoginController extends Controller
 {
@@ -66,8 +68,10 @@ class LoginController extends Controller
         ]);
         DB::beginTransaction();
         try {
-                    $faculty = FacultyStaff::select('*')->join('faculty_staff_user_mapping', 'faculty_staff_user_mapping.faculty_staff_id', '=', 'faculty_staff_personal_details.id')->join('users', 'users.id', '=', 'faculty_staff_user_mapping.user_id')->where('users.email', $input["email"])->first();
-                    $student = StudentUser::select('*')->join('student_user_mapping', 'student_user_mapping.student_id', '=', 'student_personal_details.id')->join('users', 'users.id', '=', 'student_user_mapping.user_id')->where('users.email', $input["email"])->first();
+                    $faculty = FacultyStaff::select('*', 'faculty_staff_personal_details.id as fid')->join('faculty_staff_user_mapping', 'faculty_staff_user_mapping.faculty_staff_id', '=', 'faculty_staff_personal_details.id')->join('users', 'users.id', '=', 'faculty_staff_user_mapping.user_id')->where('users.email', $input["email"])->first();
+                    $facultyID = $faculty ?  $faculty->fid : 0; 
+                    $student = StudentUser::select('*')->join('student_user_mapping', 'student_user_mapping.student_id', '=', 'student_personal_details.id')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->join('users', 'users.id', '=', 'student_user_mapping.user_id')->where('users.email', $input["email"])->first();
+                    $class_advisoryCTR = ClassAdvisory::where('faculty_id', $facultyID)->count();
                 if(auth()->attempt(['email'=>$input["email"], 'password'=>$input["password"]])){
                     if(auth()->user()->role == 'Super Administrator' || auth()->user()->role == 'Administrator'){
                         Session::put('firstname', $faculty->firstname);
@@ -83,12 +87,18 @@ class LoginController extends Controller
                         Session::put('firstname', $faculty->firstname);
                         Session::put('lastname', $faculty->lastname);
                         Session::put('avatar', $faculty->avatar);
+                        if($class_advisoryCTR != 0){
+                            Session::put('role', 'Adviser');
+                        }else{
+                            Session::put('role', 'Subject Teacher');
+                        }
                         Toastr::success('Login successfully :)','Success');
                         return redirect()->route('faculty.dashboard')->with('alert-success', 'You are now logged in.');// this route is for the Subject Teacher
                     }else if(auth()->user()->role == 'Junior High School Student' || auth()->user()->role == 'Senior High School Student'){
                         Session::put('firstname', $student->firstname);
                         Session::put('lastname', $student->lastname);
                         Session::put('avatar', $student->avatar);
+                        Session::put('grade_level', $student->grade_level);
                         Toastr::success('Login successfully :)','Success');
                         return redirect()->route('student.dashboard')->with('alert-success', 'You are now logged in.');// this route is for the Non-Graduating Junior High School
                     // }else if(auth()->user()->role == 'Graduating Junior High School student and qualified for honors'){
@@ -117,6 +127,8 @@ class LoginController extends Controller
         $request->session()->forget('firstname');
         $request->session()->forget('lastname');
         $request->session()->forget('avatar');
+        $request->session()->forget('role');
+        $request->session()->forget('grade_level');
         $request->session()->flush();
 
         Toastr::success('Logout successfully :)','Success');

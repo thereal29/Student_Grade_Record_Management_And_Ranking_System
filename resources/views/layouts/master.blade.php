@@ -221,6 +221,13 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css
     <script src="
 https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js
 "></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" rel="stylesheet"/>
+    <link
+     rel="stylesheet"
+     href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
+   />
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     @if( (Session::has('alert-success')) && (auth()->user()->role == 'Super Administrator' || auth()->user()->role == 'Administrator' || auth()->user()->role == 'Faculty'))
    <script type="text/javascript">
       $(document).ready(function() {
@@ -230,11 +237,36 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js
    </script>
     @endif
     <script>
+    const phoneInputField = document.querySelector("#phone");
+   const phoneInput = window.intlTelInput(phoneInputField, {
+    onlyCountries: ["ph"],
+    separateDialCode: true,
+    autoFormat: true,
+    autoPlaceholder: "aggressive",
+    hiddenInput: "full",
+     utilsScript:
+       "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+   });
   $(document).ready(function() {
     $('.add-subject').select2();
     $('.add-subject').select2({
     minimumResultsForSearch: Infinity,
     dropdownParent: $('#addnewcurriculum'),
+    });
+    $('.edit-subject').select2();
+    $('.edit-subject').select2({
+    minimumResultsForSearch: Infinity,
+    dropdownParent: $('#editcurriculum'),
+    });
+    $('.edit-section').select2();
+    $('.edit-section').select2({
+    minimumResultsForSearch: Infinity,
+    dropdownParent: $('#editsectionmodal'),
+    });
+    $('.add-section').select2();
+    $('.add-section').select2({
+    minimumResultsForSearch: Infinity,
+    dropdownParent: $('#addnewsectionmodal'),
     });
     $('.normselect').select2();
     $('.normselect').select2({
@@ -253,6 +285,14 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js
     $('.syselect2').select2({
     minimumResultsForSearch: Infinity,
     dropdownParent: $('#changeSY')
+    });
+
+    $("#datepicker").datepicker( {
+        format: "yyyy",
+        viewMode: "years", 
+        minViewMode: "years"
+    }).on('changeDate', function(e){
+        $(this).datepicker('hide');
     });
 
     

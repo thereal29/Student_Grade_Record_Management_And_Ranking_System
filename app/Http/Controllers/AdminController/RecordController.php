@@ -16,13 +16,13 @@ class RecordController extends Controller
         return view('admin.modules.students.records.index', compact('student'));
     }
     public function viewRecord(Request $request){
-        $record = StudentUser::select('*','student_personal_details.id AS studID','student_personal_details.firstname AS fnameStud', 'student_personal_details.middlename AS mnameStud', 'student_personal_details.lastname AS lnameStud', 'subject.grade_level as sgrade_level')->leftJoin('student_subject', 'student_subject.student_id', '=', 'student_personal_details.id')->leftJoin('grades_per_subject', 'grades_per_subject.student_subject_id', '=', 'student_subject.id')->leftJoin('subject', 'subject.id', '=', 'student_subject.subject_id')->join('student_advisory', 'student_advisory.student_id', '=', 'student_personal_details.id')->join('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'student_advisory.adviser_id')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->where('student_personal_details.id', $request->id)->first();
+        $record = StudentUser::select('*','student_personal_details.id AS studID','student_personal_details.firstname AS fnameStud', 'student_personal_details.middlename AS mnameStud', 'student_personal_details.lastname AS lnameStud', 'subject.grade_level as sgrade_level')->leftJoin('student_subject', 'student_subject.student_id', '=', 'student_personal_details.id')->leftJoin('grades_per_subject', 'grades_per_subject.student_subject_id', '=', 'student_subject.id')->leftJoin('subject', 'subject.id', '=', 'student_subject.subject_id')->leftJoin('student_advisory', 'student_advisory.student_id', '=', 'student_personal_details.id')->leftJoin('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'student_advisory.adviser_id')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->where('student_personal_details.id', $request->id)->first();
         return view('admin.modules.students.records.view_record', compact('record'));
     }
     public function fetchRecord(Request $request){
         $gradelevel = $request->gradelevel;
         $studID = $request->student_id;
-        $students = StudentUser::select('*', 'student_personal_details.firstname AS sfname', 'student_personal_details.lastname AS slname', 'student_personal_details.gender AS sgender')->leftJoin('student_subject', 'student_subject.student_id', '=', 'student_personal_details.id')->leftJoin('class', 'class.student_subject_id', '=', 'student_subject.id')->leftJoin('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class.faculty_id')->leftJoin('subject', 'subject.id', '=', 'student_subject.subject_id')->leftJoin('grades_per_subject', 'grades_per_subject.student_subject_id', '=', 'student_subject.id')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->where('student_personal_details.id', $studID)->where('student_gradelevel_section.grade_level', $gradelevel)->groupBy('student_subject.student_id')->get();
+        $students = StudentUser::select('*', 'student_personal_details.firstname AS sfname', 'student_personal_details.lastname AS slname', 'faculty_staff_personal_details.firstname AS ffname', 'student_personal_details.gender AS sgender')->join('student_subject', 'student_subject.student_id', '=', 'student_personal_details.id')->join('subject', 'subject.id', '=', 'student_subject.subject_id')->leftJoin('class', 'class.subject_id', '=', 'subject.id')->leftJoin('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class.faculty_id')->leftJoin('grades_per_subject', 'grades_per_subject.student_subject_id', '=', 'student_subject.id')->join('student_user_mapping', 'student_user_mapping.student_id', '=', 'student_personal_details.id')->join('users', 'users.id', '=', 'student_user_mapping.user_id')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->where('student_personal_details.id', $studID)->where('student_gradelevel_section.grade_level', $gradelevel)->get();
         foreach($students as $student){
             $final_rating = ($student->firstQ + $student->secondQ + $student->thirdQ + $student->fourthQ)/4 ;
         }
@@ -54,17 +54,26 @@ class RecordController extends Controller
             foreach($students as $student){
                 $query .= '<tr>
                             <td>'. $student->subject_code .'&nbsp | &nbsp'. $student->subject_description .'</td>
-                            <td style="width: 6%; text-align:center;">'. $student->credits .'</td>
-                            <td style="width: 20%; text-align:center;">'. $student->firstname.' '. $student->lastname .'</td>
-                            <td style="width: 6%; text-align:center;">'. $student->firstQ .'</td>
+                            <td style="width: 6%; text-align:center;">'. $student->credits .'</td>';
+                            if($student->firstname != null){
+                                $query .= '<td>'. $student->firstname.' '.$student->lastname.'</td>';
+                            }else{
+                                $query .= '<td>None</td>';
+                            }
+                            $query .= '<td style="width: 6%; text-align:center;">'. $student->firstQ .'</td>
                             <td style="width: 6%; text-align:center;">'. $student->secondQ .'</td>
                             <td style="width: 6%; text-align:center;">'. $student->thirdQ .'</td>
-                            <td style="width: 6%; text-align:center;">'. $student->fourthQ .'</td>
-                            <td style="width: 6%; text-align:center; font-weight:bold; color:blue; background-color: #FFFBC8;">'. $final_rating .'</td>';
-                            if($final_rating < 75){
-                            $query .= '<td style="width: 5%; text-align:center; font-weight:bold; color:red; background-color: #D6EEEE;">FAILED</td>';
+                            <td style="width: 6%; text-align:center;">'. $student->fourthQ .'</td>';
+                            if($final_rating == 0){
+                                $query .= '<td style="width: 6%; text-align:center; font-weight:bold; color:blue; background-color: #FFFBC8;"></td>
+                                            <td style="width: 5%; text-align:center; font-weight:bold; color:#b3b3b3; background-color: #D6EEEE;">TO BE ENCODED</td>';
                             }else{
-                            $query .= '<td style="width: 5%; text-align:center; font-weight:bold; color:green; background-color: #D6EEEE;">PASSED</td>';
+                                $query .= '<td style="width: 6%; text-align:center; font-weight:bold; color:blue; background-color: #FFFBC8;">'. $final_rating .'</td>';
+                                if($final_rating < 75){
+                                $query .= '<td style="width: 5%; text-align:center; font-weight:bold; color:red; background-color: #D6EEEE;">FAILED</td>';
+                                }else{
+                                $query .= '<td style="width: 5%; text-align:center; font-weight:bold; color:green; background-color: #D6EEEE;">PASSED</td>';
+                                }
                             }
                 $query .= '</tr>';
             }

@@ -9,10 +9,10 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="page-title">Subjects</h3>
+                        <h3 class="page-title">Class Advisories</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Subjects</li>
+                            <li class="breadcrumb-item active">Class Advisory</li>
                         </ul>
                     </div>
                 </div>
@@ -23,14 +23,11 @@
                         <div class="card-body">
                             <div class="page-header">
                                 <div class="row align-items-center">
-                                    <div class="col">
-                                        <h3 class="page-title">Subjects</h3>
-                                    </div>
                                     <div class="col-auto text-end float-end ms-auto download-grp">
                                         <a href="#" class="btn btn-outline-primary me-2">
                                             <i class="fas fa-print"></i> Print
                                         </a>
-                                        <a  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addnewcurriculum">
+                                        <a  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addnewsectionmodal">
                                             <i class="fas fa-plus"></i>
                                         </a>
                                     </div>
@@ -43,7 +40,7 @@
                                                 <div class="col-md-9">
                                                 <form action="" method="get">
                                                     <select name="gradelevel" id="gradelevel" class="form-select d-flex normselect">
-                                                        <option value="">Show all Subjects</option>
+                                                        <option value="">Show all Section</option>
                                                         <!-- <option value="">No Enrolled Students</option> -->
                                                         <option value="Grade 7" {{Request::get('gradelevel') == 'Grade 7' ? 'selected' : ''}}> Grade 7</option>
                                                         <option value="Grade 8" {{Request::get('gradelevel') == 'Grade 8' ? 'selected' : ''}}> Grade 8</option>
@@ -62,7 +59,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="table-responsive" id="subject_list">
+                            <div class="table-responsive" id="section_list">
                                 
                             </div>
                         </div>
@@ -111,12 +108,12 @@
         </script>
         <script>
             $(document).ready(function(){
-                fetchSubject();
+                fetchSection();
                 $("#gradelevel").on('change', function() {
-                    fetchSubject();
+                    fetchSection();
                 });
 
-                $(document).on('click', '.delete_subject', function(e) {
+                $(document).on('click', '.delete_section', function(e) {
                 e.preventDefault();
                 let id = $(this).attr('id');
                 let csrf = '{{ csrf_token() }}';
@@ -131,7 +128,7 @@
                 }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                    url: '{{ route('deleteSubject') }}',
+                    url: '{{ route('deleteSection') }}',
                     method: 'delete',
                     data: {
                         id: id,
@@ -144,18 +141,18 @@
                         'Subject  has been deleted.',
                         'success'
                         )
-                        fetchSubject();
+                        fetchSection();
                     }
                     });
                 }
                 })
             });
 
-                    function fetchSubject(){
+                    function fetchSection(){
                         var gradelevel = $('#gradelevel').val();
                         $.ajax({
                         type: "POST",
-                        url: "/fetch-subject",
+                        url: "/fetch-section",
                         data: {
                             "_token": "{{ csrf_token() }}",
                             gradelevel : gradelevel
@@ -164,9 +161,9 @@
                         success: function (response) {
                             console.log(response.activities);
                             if (response.status == 'success') {
-                                $('#subject_list').html(response.query);
+                                $('#section_list').html(response.query);
                             }else{
-                                $('#subject_list').html("");
+                                $('#section_list').html("");
                             }
                             if ($('.datatable').length > 0) {
                                 $('.datatable').DataTable({
@@ -176,6 +173,118 @@
                         }
                         });
                     }
+                    $(document).on('click', '.edit_section', function(e) {
+                    e.preventDefault();
+                    let id = $(this).attr('id');
+                    $('#editsectionmodal').modal('show');
+                    $.ajax({
+                    url: '{{ route('editSection') }}',
+                    method: 'get',
+                    data: {
+                        id: id,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        $('#sec_id').val(response.sid);
+                        $('#editsectionlevel').val(response.grade_level);
+                        $('#editsectionlevel').select2();
+                        $('#editsectionlevel').select2({
+                        minimumResultsForSearch: Infinity,
+                        dropdownParent: $('#editsectionmodal')
+                        });
+                        $('#editsection').val(response.section);
+                        $('#editfaculty').val(response.fid);
+                        $('#editfaculty').select2();
+                        $('#editfaculty').select2({
+                        minimumResultsForSearch: Infinity,
+                        dropdownParent: $('#editsectionmodal')
+                        });
+                    }
+                    });
+                    
+                });
+                $("#editSection").submit(function(e) {
+                    e.preventDefault();
+                    var fd = $(this).serialize();
+                    $.ajax({
+                    url: '{{ route('updateSection') }}',
+                    method: 'post',
+                    data: fd,
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status == 'success') {
+                        Swal.fire(
+                            'Updated!',
+                            'Class Advisory Updated Successfully!',
+                            'success'
+                        )
+                        fetchSection();
+                        }
+                        $("#editSection")[0].reset();
+                        $("#editsectionmodal").modal('hide');
+                    },
+                    error:function(response){
+                        if(response.responseJSON.errors.section){
+                            $(".invalid-feedback-section").html('<small>'+ response.responseJSON.errors.section+'</small>');
+                        }else{
+                            $(".invalid-feedback-section").html('');
+                        }
+                        if(response.responseJSON.errors.grade_level){
+                            $(".invalid-feedback-grade_level").html('<small>'+ response.responseJSON.errors.grade_level+'</small>');
+                        }else{
+                            $(".invalid-feedback-grade_level").html('');
+                        }
+                        if(response.responseJSON.errors.faculty){
+                            $(".invalid-feedback-faculty").html('<small>'+ response.responseJSON.errors.faculty+'</small>');
+                        }else{
+                            $(".invalid-feedback-faculty").html('');
+                        }
+                    } 
+                    });
+                });
+
+
+                $("#addSection").submit(function(e) {
+                    e.preventDefault();
+                    var fd = $(this).serialize();
+                    $.ajax({
+                    url: '{{ route('addSection') }}',
+                    method: 'post',
+                    data: fd,
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status == 'success') {
+                        Swal.fire(
+                            'Added!',
+                            'Class Advisory Added Successfully!',
+                            'success'
+                        )
+                        fetchSection();
+                        }
+                        $("#addSection")[0].reset();
+                        $("#addnewsectionmodal").modal('hide');
+                    },
+                    error:function(response){
+                        if(response.responseJSON.errors.section){
+                            $(".invalid-feedback-section").html('<small>'+ response.responseJSON.errors.section+'</small>');
+                        }else{
+                            $(".invalid-feedback-section").html('');
+                        }
+                        if(response.responseJSON.errors.grade_level){
+                            $(".invalid-feedback-grade_level").html('<small>'+ response.responseJSON.errors.grade_level+'</small>');
+                        }else{
+                            $(".invalid-feedback-grade_level").html('');
+                        }
+                        if(response.responseJSON.errors.faculty){
+                            $(".invalid-feedback-faculty").html('<small>'+ response.responseJSON.errors.faculty+'</small>');
+                        }else{
+                            $(".invalid-feedback-faculty").html('');
+                        }
+                    } 
+                    });
+                });
+                
+
             });
         </script>
     @endsection

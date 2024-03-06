@@ -40,11 +40,16 @@
                         <li><a class="{{set_active(['admin/modules/faculty/view=class'])}}">Classes Hadled</a></li>
                     </ul>
                 </li>
-                <li class="{{set_active(['admin/modules/subject'])}}">
-                    <a class="linkmenu" href="{{ route('admin/subject') }}">
+                <li class="submenu {{set_active(['admin/modules/classes'])}}">
+                    <a class="linkmenu" href="#">
                     <i class="fas fa-book"></i>
-                        <span>Subject List</span>
+                        <span>Other Master List</span>
+                        <span class="menu-arrow"></span>
                     </a>
+                    <ul>
+                        <li><a href="{{ route('admin/class_list') }}"  class="{{set_active(['admin/modules/class'])}}">Class</a></li>
+                        <li><a href="{{ route('admin/class_advisory_list') }}"  class="{{set_active(['admin/modules/class_advisory'])}}">Class Advisory</a></li>
+                    </ul>
                 </li>
                 <li class="submenu {{set_active([''])}}">
                     <a class="linkmenu" href="#"><i class="fas fa-clipboard"></i>
@@ -134,15 +139,17 @@
                         <li><a href="{{ route('admin/student_subject') }}" class="{{set_active(['admin/modules/student/subject','admin/modules/student/view=subject'])}}">Classes Handled</a></li>
                     </ul>
                 </li>
+                @if(Session::get('role') == 'Adviser')
                 <li class="{{set_active(['admin/modules/subject'])}}">
-                    <a class="linkmenu" href="{{ route('admin/subject') }}">
+                    <a class="linkmenu" href="#">
                     <i class="fas fa-award"></i>
                         <span>Honor Roll Ranking</span>
                     </a>
                 </li>
+                @endif
                 <li class="">
                     <a class="text-muted"type="button" data-bs-toggle="modal" data-bs-target="#changeSY">
-                    <i class='fas fa-calendar'></i>
+                    <i class='fas fa-calendar-check'></i>
                     <span>Change School Year</span>
                     </a>
                 </li>
@@ -166,12 +173,14 @@
                         <span>Grades</span>
                     </a>
                 </li>
+                @if(Session::get('grade_level') == 'Grade 10' || Session::get('grade_level') == 'Grade 12')
                 <li class="{{set_active([''])}}">
                     <a class="linkmenu" href="#">
                     <i class="fas fa-award"></i>
                         <span>Honor Roll Ranking</span>
                     </a>
                 </li>
+                @endif
                 @if(auth()->user()->role == 'Junior High School Student')
                 <li class="{{set_active(['student/modules/co_curricular_activity'])}}">
                     <a class="linkmenu" href="{{ route('student.co_curricular_activity') }}">
@@ -179,12 +188,14 @@
                         <span>Co Curricular Activity</span>
                     </a>
                 </li>
+                @if(Session::get('grade_level') == 'Grade 10')
                 <li class="{{set_active(['student/modules/character_evaluation'])}}">
                     <a class="linkmenu" href="{{ route('student.co_curricular_activity') }}">
                     <i class="fas fa-clipboard"></i>
                         <span>Character Evaluation</span>
                     </a>
                 </li>
+                @endif
                 @endif
                 @endif
             </ul>

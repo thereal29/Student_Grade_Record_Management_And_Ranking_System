@@ -55,10 +55,21 @@ Route::middleware(['auth', 'user-role:Super Administrator,Administrator'])->grou
         Route::get('/admin/modules/student/view=record', 'viewRecord')->name('admin/view_record');
         Route::post('fetch-record', 'fetchRecord');
     });
-    Route::controller(App\Http\Controllers\AdminController\SubjectController::class)->group(function () {
-        Route::get('/admin/modules/subject', 'index')->name('admin/subject');
+    Route::controller(App\Http\Controllers\AdminController\ClassController::class)->group(function () {
+        Route::get('/admin/modules/class', 'index')->name('admin/class_list');
         Route::post('fetch-subject', 'fetchSubjects');
         Route::delete('delete-subject', 'delete')->name('deleteSubject');
+        Route::get('edit-subject', 'edit')->name('editSubject');
+        Route::post('update-subject', 'update')->name('updateSubject');
+        Route::post('add-subject', 'store')->name('addSubject');
+    });
+    Route::controller(App\Http\Controllers\AdminController\ClassAdvisoryController::class)->group(function () {
+        Route::get('/admin/modules/class_advisory', 'index')->name('admin/class_advisory_list');
+        Route::post('fetch-section', 'fetchSection');
+        Route::delete('delete-section', 'delete')->name('deleteSection');
+        Route::get('edit-section', 'edit')->name('editSection');
+        Route::post('update-section', 'update')->name('updateSection');
+        Route::post('add-section', 'store')->name('addSection');
     });
     Route::controller(App\Http\Controllers\AdminController\StudentRegistrationController::class)->group(function () {
         Route::get('/admin/modules/student/subject', 'index')->name('admin/student_subject');

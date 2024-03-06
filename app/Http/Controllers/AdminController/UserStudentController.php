@@ -82,7 +82,15 @@ class UserStudentController extends Controller
             'section'       => 'required|string',
             'gender'        => 'required|not_in:0',
             'email'         => 'required|email',
-            'phone_number'  => 'nullable|digits:11',
+            'phone_number'  => 'required|digits:10',
+            'date_of_birth' => 'required|string',
+            'age'           => 'required|digits:2',
+            'home_address'  => 'required|string',
+            'parent_name'   => 'required|string',
+            'parent_address'=> 'required|string',
+            'previous_school'=> 'required|string',
+            'year_graduated'=> 'required|string',
+            'gpa'           => 'required|numeric|between:0,99.99',
         ]);
         DB::beginTransaction();
         try {
@@ -95,7 +103,15 @@ class UserStudentController extends Controller
                 $student->lrn_number = $request->lrn_number;
                 $student->glevel_section_id = $gradelevelID->id;
                 $student->gender = $request->gender;
-                $student->phone_number = $request->phone_number;
+                $student->phone_number = '63'.$request->phone_number;
+                $student->birth_date = $request->date_of_birth;
+                $student->age = $request->age;
+                $student->home_address = $request->home_address;
+                $student->parent_name = $request->parent_name;
+                $student->parent_address = $request->parent_address;
+                $student->previous_school_graduated = $request->previous_school;
+                $student->year_graduated = $request->year_graduated;
+                $student->previous_school_average = $request->gpa;
                 $student->save();
                 $studentUser = new User;
                 $studentUser->email = $request->email;
@@ -153,7 +169,15 @@ class UserStudentController extends Controller
             'section'       => 'required|string',
             'gender'        => 'required|not_in:0',
             'email'         => 'required|email',
-            'phone_number'  => 'nullable|digits:11',
+            'phone_number'  => 'required|digits:12',
+            'date_of_birth' => 'required|string',
+            'age'           => 'required|digits:2',
+            'home_address'  => 'required|string',
+            'parent_name'   => 'required|string',
+            'parent_address'=> 'required|string',
+            'previous_school'=> 'required|string',
+            'year_graduated'=> 'required|string',
+            'gpa'           => 'required|numeric|between:0,99.99',
         ]);
         DB::beginTransaction();
         $gradelevelID = GradeSection::select('id')->where('grade_level', $request->grade_level)->where('section', $request->section)->first();
@@ -165,6 +189,14 @@ class UserStudentController extends Controller
         $student->glevel_section_id = $gradelevelID->id;
         $student->gender = $request->gender;
         $student->phone_number = $request->phone_number;
+        $student->birth_date = $request->date_of_birth;
+        $student->age = $request->age;
+        $student->home_address = $request->home_address;
+        $student->parent_name = $request->parent_name;
+        $student->parent_address = $request->parent_address;
+        $student->previous_school_graduated = $request->previous_school;
+        $student->year_graduated = $request->year_graduated;
+        $student->previous_school_average = $request->gpa;
         $student->update();
         $studentUser = User::join('student_user_mapping', 'student_user_mapping.user_id', '=', 'users.id')->where('student_id', $student->id)->first();
         $studentUser->email = $request->email;

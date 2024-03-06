@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('class', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_subject_id');
-            $table->foreign('student_subject_id')->references('id')->on('student_subject');
+            $table->foreignId('subject_id');
+            $table->foreign('subject_id')->references('id')->on('subject');
             $table->foreignId('faculty_id');
             $table->foreign('faculty_id')->references('id')->on('faculty_staff_personal_details');
             $table->foreignId('sy_id');

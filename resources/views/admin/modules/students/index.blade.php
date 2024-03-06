@@ -54,7 +54,7 @@
                                     </div>
                                     <div class="col-auto text-end float-end ms-auto download-grp">
                                         <a href="#" class="btn btn-outline-primary me-2"><i class="fas fa-print"></i> Print</a>
-                                        <a href="" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                                        <a href="{{route('admin.student-user-add')}}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
                                     </div>
                                 </div>
                             </div>

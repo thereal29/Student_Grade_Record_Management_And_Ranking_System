@@ -24,7 +24,7 @@ return new class extends Migration
             $table->integer('age');
             $table->enum('gender', ['Male', 'Female']);
             $table->string('phone_number', 50)->nullable();
-            $table->date('birth_date');
+            $table->string('birth_date', 50);
             $table->string('home_address', 100);
             $table->string('parent_name', 100);
             $table->string('parent_address', 100);

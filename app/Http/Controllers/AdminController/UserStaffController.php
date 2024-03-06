@@ -78,6 +78,8 @@ class UserStaffController extends Controller
             'university_number'    => 'required|digits:12|unique:faculty_staff_personal_details',
             'gender'        => 'required|not_in:0',
             'email'         => 'required|email',
+            'phone_number'  => 'required|digits:10',
+            'home_address'  => 'required|string',
             'staff_role'  => 'required|not_in:0',
         ]);
         DB::beginTransaction();
@@ -89,6 +91,8 @@ class UserStaffController extends Controller
                 $staff->lastname = Str::title($request->last_name);
                 $staff->university_number = $request->university_number;
                 $staff->gender = $request->gender;
+                $staff->phone_number = $request->phone_number;
+                $staff->home_address = $request->home_address;
                 $staff->save();
                 $staffUser = new User;
                 $staffUser->email = $request->email;
@@ -132,6 +136,8 @@ class UserStaffController extends Controller
             'university_number'    => 'required|digits:12|unique:faculty_staff_personal_details,university_number,'.$request->staff_id,
             'gender'        => 'required|not_in:0',
             'email'         => 'required|email',
+            'phone_number'  => 'required|digits:12',
+            'home_address'  => 'required|string',
             'staff_role'  => 'required|not_in:0',
         ]);
         $staff = FacultyStaff::find($request->staff_id);
@@ -140,6 +146,8 @@ class UserStaffController extends Controller
         $staff->lastname = Str::title($request->last_name);
         $staff->university_number = $request->university_number;
         $staff->gender = $request->gender;
+        $staff->phone_number = '63'.$request->phone_number;
+        $staff->home_address = $request->home_address;
         $staff->update();
         $staffUser = User::join('faculty_staff_user_mapping', 'faculty_staff_user_mapping.user_id', '=', 'users.id')->where('faculty_staff_id', $staff->id)->first();
         $staffUser->email = $request->email;

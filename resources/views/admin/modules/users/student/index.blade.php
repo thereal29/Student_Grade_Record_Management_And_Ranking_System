@@ -319,7 +319,15 @@
                         dropdownParent: $('#editstudentuser')
                         });
                         $('#email_student').val(response.email);
-                        $('#phone_number_student').val(response.phone_number);
+                        $('#phone').val(response.phone_number);
+                        $('#dateofbirth').val(response.birth_date);
+                        $('#age_student').val(response.age);
+                        $('#home_address_student').val(response.home_address);
+                        $('#parent_name_student').val(response.parent_name);
+                        $('#parent_address_student').val(response.parent_address);
+                        $('#school_graduated').val(response.previous_school_graduated);
+                        $('#year_grad').val(response.year_graduated);
+                        $('#gpa_student').val(response.previous_school_average);
                     }
                     });
                 });
@@ -388,7 +396,52 @@
                             $(".invalid-feedback-phone").html('<small>'+ response.responseJSON.errors.phone_number+'</small>');
                         }else{
                             $(".invalid-feedback-phone").html('');
+                        }
+                        if(response.responseJSON.errors.phone_number){
+                            $(".invalid-feedback-phone").html('<small>'+ response.responseJSON.errors.phone_number+'</small>');
+                        }else{
+                            $(".invalid-feedback-phone").html('');
+                        }
+                        if(response.responseJSON.errors.date_of_birth){
+                            $(".invalid-feedback-dateofbirth").html('<small>'+ response.responseJSON.errors.date_of_birth+'</small>');
+                        }else{
+                            $(".invalid-feedback-dateofbirth").html('');
+                        }
+                        if(response.responseJSON.errors.age){
+                            $(".invalid-feedback-age").html('<small>'+ response.responseJSON.errors.age+'</small>');
+                        }else{
+                            $(".invalid-feedback-age").html('');
+                        }
+                        if(response.responseJSON.errors.home_address){
+                            $(".invalid-feedback-homeaddress").html('<small>'+ response.responseJSON.errors.home_address+'</small>');
+                        }else{
+                            $(".invalid-feedback-homeaddress").html('');
+                        }
+                        if(response.responseJSON.errors.parent_name){
+                            $(".invalid-feedback-parentname").html('<small>'+ response.responseJSON.errors.parent_name+'</small>');
+                        }else{
+                            $(".invalid-feedback-parentname").html('');
+                        }
+                        if(response.responseJSON.errors.parent_address){
+                            $(".invalid-feedback-parentaddress").html('<small>'+ response.responseJSON.errors.parent_address+'</small>');
+                        }else{
+                            $(".invalid-feedback-parentaddress").html('');
                         } 
+                        if(response.responseJSON.errors.previous_school){
+                            $(".invalid-feedback-previousschool").html('<small>'+ response.responseJSON.errors.previous_school+'</small>');
+                        }else{
+                            $(".invalid-feedback-previousschool").html('');
+                        }  
+                        if(response.responseJSON.errors.year_graduated){
+                            $(".invalid-feedback-yeargraduated").html('<small>'+ response.responseJSON.errors.year_graduated+'</small>');
+                        }else{
+                            $(".invalid-feedback-yeargraduated").html('');
+                        }
+                        if(response.responseJSON.errors.gpa){
+                            $(".invalid-feedback-gpa").html('<small>'+ response.responseJSON.errors.gpa+'</small>');
+                        }else{
+                            $(".invalid-feedback-gpa").html('');
+                        }
                     } 
                     });
                 });

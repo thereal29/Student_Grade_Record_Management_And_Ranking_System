@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AdminController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\StudentUser;
+use App\Models\StudentSubjects;
 use App\Models\Classes;
 use App\Models\ClassAdvisory;
 // use App\Models\Curriculum;
@@ -15,17 +16,30 @@ class StudentController extends Controller
 {
     public function index(){
         $selSY = \Session::get('fromSY');
-        $advisers = ClassAdvisory::select('*')->join('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class_advisory.faculty_id')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'class_advisory.glevel_section_id')->join('school_year', 'school_year.id', '=', 'class_advisory.sy_id')->where('school_year.from_year', $selSY)->get();
+        if($selSY == 'Show All'){
+            $advisers = ClassAdvisory::select('*')->join('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class_advisory.faculty_id')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'class_advisory.glevel_section_id')->join('school_year', 'school_year.id', '=', 'class_advisory.sy_id')->get();
+        }else{
+            $advisers = ClassAdvisory::select('*')->join('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class_advisory.faculty_id')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'class_advisory.glevel_section_id')->join('school_year', 'school_year.id', '=', 'class_advisory.sy_id')->where('school_year.from_year', $selSY)->get();
+        }
         return view('admin.modules.students.index', compact('advisers'));
     }
     public function fetchStudents(Request $request){
         $adviser = $request->adviser;
         $selSY = \Session::get('fromSY');
-        if($adviser != null && $adviser != 'showall'){
-            $students = StudentUser::select('*','student_personal_details.id as sid', 'student_personal_details.firstname as sfname', 'student_personal_details.lastname as slname')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->join('class_advisory', 'class_advisory.glevel_section_id', '=', 'student_personal_details.glevel_section_id')->join('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class_advisory.faculty_id')->join('student_user_mapping', 'student_user_mapping.student_id', '=', 'student_personal_details.id')->join('users', 'users.id', '=', 'student_user_mapping.user_id')->join('school_year', 'school_year.id', '=', 'users.sy_id')->where('faculty_staff_personal_details.lastname', $adviser)->where('school_year.from_year', $selSY)->get();
+        if($selSY == 'Show All'){
+            if($adviser != null && $adviser != 'showall'){
+                $students = StudentUser::select('*','student_personal_details.id as sid', 'student_personal_details.firstname as sfname', 'student_personal_details.lastname as slname')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->join('class_advisory', 'class_advisory.glevel_section_id', '=', 'student_personal_details.glevel_section_id')->join('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class_advisory.faculty_id')->join('student_user_mapping', 'student_user_mapping.student_id', '=', 'student_personal_details.id')->join('users', 'users.id', '=', 'student_user_mapping.user_id')->join('school_year', 'school_year.id', '=', 'users.sy_id')->where('faculty_staff_personal_details.lastname', $adviser)->get();
+            }else{
+                $students = StudentUser::select('*','student_personal_details.id as sid', 'student_personal_details.firstname as sfname', 'student_personal_details.lastname as slname')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->join('student_user_mapping', 'student_user_mapping.student_id', '=', 'student_personal_details.id')->join('users', 'users.id', '=', 'student_user_mapping.user_id')->join('school_year', 'school_year.id', '=', 'users.sy_id')->get();
+            }
         }else{
-            $students = StudentUser::select('*','student_personal_details.id as sid', 'student_personal_details.firstname as sfname', 'student_personal_details.lastname as slname')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->join('student_user_mapping', 'student_user_mapping.student_id', '=', 'student_personal_details.id')->join('users', 'users.id', '=', 'student_user_mapping.user_id')->join('school_year', 'school_year.id', '=', 'users.sy_id')->where('school_year.from_year', $selSY)->get();
+            if($adviser != null && $adviser != 'showall'){
+                $students = StudentUser::select('*','student_personal_details.id as sid', 'student_personal_details.firstname as sfname', 'student_personal_details.lastname as slname')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->join('class_advisory', 'class_advisory.glevel_section_id', '=', 'student_personal_details.glevel_section_id')->join('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class_advisory.faculty_id')->join('student_user_mapping', 'student_user_mapping.student_id', '=', 'student_personal_details.id')->join('users', 'users.id', '=', 'student_user_mapping.user_id')->join('school_year', 'school_year.id', '=', 'users.sy_id')->where('faculty_staff_personal_details.lastname', $adviser)->where('school_year.from_year', $selSY)->get();
+            }else{
+                $students = StudentUser::select('*','student_personal_details.id as sid', 'student_personal_details.firstname as sfname', 'student_personal_details.lastname as slname')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->join('student_user_mapping', 'student_user_mapping.student_id', '=', 'student_personal_details.id')->join('users', 'users.id', '=', 'student_user_mapping.user_id')->join('school_year', 'school_year.id', '=', 'users.sy_id')->where('school_year.from_year', $selSY)->get();
+            }
         }
+        
         $query = '';
         if($students->count() > 0){
             $query .= '<table class="table border-0 star-student table-hover table-center mb-0 datatables table-striped">
@@ -82,19 +96,15 @@ class StudentController extends Controller
 
     }
     public function viewProfile(Request $request){
-        $details = StudentUser::select('*', 'student_personal_details.id as sid', 'faculty_staff_personal_details.firstname as ffname', 'faculty_staff_personal_details.lastname as flname', 'student_personal_details.firstname as sfname', 'student_personal_details.lastname as slname')->join('student_user_mapping', 'student_user_mapping.student_id', '=', 'student_personal_details.id')->join('users', 'users.id', '=', 'student_user_mapping.user_id')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->leftJoin('student_advisory', 'student_advisory.student_id', '=', 'student_personal_details.id')->leftJoin('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'student_advisory.adviser_id')->where('student_personal_details.id', $request->id)->first();
-        $classes = Classes::join('student_subject', 'student_subject.id', '=', 'class.student_subject_id')->where('student_subject.student_id', $details->sid)->get();
+        $details = StudentUser::select('*', 'student_personal_details.id as sid', 'faculty_staff_personal_details.firstname as ffname', 'faculty_staff_personal_details.lastname as flname', 'student_personal_details.firstname as sfname', 'student_personal_details.lastname as slname')->join('student_user_mapping', 'student_user_mapping.student_id', '=', 'student_personal_details.id')->join('users', 'users.id', '=', 'student_user_mapping.user_id')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->leftJoin('class_advisory', 'class_advisory.glevel_section_id', '=', 'student_gradelevel_section.id')->leftJoin('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class_advisory.faculty_id')->where('student_personal_details.id', $request->id)->first();
+        $classes = StudentSubjects::where('student_subject.student_id', $details->sid)->get();
         $numClass = $classes->count();
         return view('admin.modules.students.profile', compact('details', 'numClass'));
-    }
-    public function viewRecord(Request $request){
-        $record = StudentUser::select('*','student_personal_details.id AS studID','student_personal_details.firstname AS fnameStud', 'student_personal_details.middlename AS mnameStud', 'student_personal_details.lastname AS lnameStud', 'subject.grade_level as sgrade_level')->leftJoin('student_subject', 'student_subject.student_id', '=', 'student_personal_details.id')->leftJoin('grades_per_subject', 'grades_per_subject.student_subject_id', '=', 'student_subject.id')->leftJoin('subject', 'subject.id', '=', 'student_subject.subject_id')->join('student_advisory', 'student_advisory.student_id', '=', 'student_personal_details.id')->join('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'student_advisory.adviser_id')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->where('student_personal_details.id', $request->id)->first();
-        return view('admin.modules.student_record.view_record', compact('record'));
     }
     public function fetchRecord(Request $request){
         $gradelevel = $request->gradelevel;
         $studID = $request->student_id;
-        $students = StudentUser::select('*', 'student_personal_details.firstname AS sfname', 'student_personal_details.lastname AS slname', 'student_personal_details.gender AS sgender')->leftJoin('student_subject', 'student_subject.student_id', '=', 'student_personal_details.id')->leftJoin('class', 'class.student_subject_id', '=', 'student_subject.id')->leftJoin('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class.faculty_id')->leftJoin('subject', 'subject.id', '=', 'student_subject.subject_id')->leftJoin('grades_per_subject', 'grades_per_subject.student_subject_id', '=', 'student_subject.id')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->where('student_personal_details.id', $studID)->where('student_gradelevel_section.grade_level', $gradelevel)->groupBy('student_subject.student_id')->get();
+        $students = StudentUser::select('*', 'student_personal_details.firstname AS sfname', 'student_personal_details.lastname AS slname', 'student_personal_details.gender AS sgender')->leftJoin('student_subject', 'student_subject.student_id', '=', 'student_personal_details.id')->leftJoin('subject', 'subject.id', '=', 'student_subject.subject_id')->leftJoin('class', 'class.subject_id', '=', 'subject.id')->leftJoin('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class.faculty_id')->leftJoin('grades_per_subject', 'grades_per_subject.student_subject_id', '=', 'student_subject.id')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->where('student_personal_details.id', $studID)->where('student_gradelevel_section.grade_level', $gradelevel)->groupBy('student_subject.student_id')->get();
         foreach($students as $student){
             $final_rating = ($student->firstQ + $student->secondQ + $student->thirdQ + $student->fourthQ)/4 ;
         }

@@ -37,7 +37,7 @@ class UserFacultyController extends Controller
                     <th>Gender</th>
                     <th>Username</th>
                     <th>Email</th>
-                    <th>Teacher Job</th>
+                    <th>Faculty Description</th>
                     <th>Action</th>
                 </tr>
             </thead>';
@@ -89,6 +89,8 @@ class UserFacultyController extends Controller
             'university_number'    => 'required|digits:12|unique:faculty_staff_personal_details',
             'gender'        => 'required|not_in:0',
             'email'         => 'required|email',
+            'phone_number'  => 'required|digits:10',
+            'home_address'  => 'required|string',
         ]);
         DB::beginTransaction();
         try { 
@@ -99,6 +101,8 @@ class UserFacultyController extends Controller
                 $faculty->lastname = Str::title($request->last_name);
                 $faculty->university_number = $request->university_number;
                 $faculty->gender = $request->gender;
+                $faculty->phone_number = '63'.$request->phone_number;
+                $faculty->home_address = $request->home_address;
                 $faculty->save();
                 $facultyUser = new User;
                 $facultyUser->email = $request->email;
@@ -142,6 +146,8 @@ class UserFacultyController extends Controller
             'university_number'    => 'required|digits:12|unique:faculty_staff_personal_details,university_number,'.$request->faculty_id,
             'gender'        => 'required|not_in:0',
             'email'         => 'required|email',
+            'phone_number'  => 'required|digits:12',
+            'home_address'  => 'required|string',
         ]);
         $faculty = FacultyStaff::find($request->faculty_id);
         $faculty->firstname = Str::title($request->first_name);
@@ -149,6 +155,8 @@ class UserFacultyController extends Controller
         $faculty->lastname = Str::title($request->last_name);
         $faculty->university_number = $request->university_number;
         $faculty->gender = $request->gender;
+        $faculty->phone_number = $request->phone_number;
+        $faculty->home_address = $request->home_address;
         $faculty->update();
         $facultyUser = User::join('faculty_staff_user_mapping', 'faculty_staff_user_mapping.user_id', '=', 'users.id')->where('faculty_staff_id', $faculty->id)->first();
         $facultyUser->email = $request->email;

@@ -21,6 +21,8 @@ return new class extends Migration
             $table->integer('secondQ')->default('0');
             $table->integer('thirdQ')->default('0');
             $table->integer('fourthQ')->default('0');
+            $table->string('status')->default('Pending');
+            $table->date('status_update_date');
             $table->timestamps();
         });
     }

@@ -254,20 +254,22 @@
                     },
                     success: function(response) {
                         $('#staff_id').val(response.fid);
-                        $('#first_name').val(response.ffname);
-                        $('#middle_name').val(response.fmname);
-                        $('#last_name').val(response.flname);
-                        $('#university_number').val(response.university_number);
-                        $('#gender').val(response.gender);
-                        $('#gender').select2();
-                        $('#gender').select2({
+                        $('#first_name_staff').val(response.ffname);
+                        $('#middle_name_staff').val(response.fmname);
+                        $('#last_name_staff').val(response.flname);
+                        $('#university_number_staff').val(response.university_number);
+                        $('#gender_staff').val(response.gender);
+                        $('#gender_staff').select2();
+                        $('#gender_staff').select2({
                         minimumResultsForSearch: Infinity,
                         dropdownParent: $('#editstaffuser')
                         });
-                        $('#email').val(response.email);
-                        $('#staff_role').val(response.role);
-                        $('#staff_role').select2();
-                        $('#staff_role').select2({
+                        $('#email_staff').val(response.email);
+                        $('#phone_staff').val(response.phone_number);
+                        $('#home_address_staff').val(response.home_address);
+                        $('#staff_role_staff').val(response.role);
+                        $('#staff_role_staff').select2();
+                        $('#staff_role_staff').select2({
                         minimumResultsForSearch: Infinity,
                         dropdownParent: $('#editstaffuser')
                         });
@@ -326,6 +328,16 @@
                             $(".invalid-feedback-email").html('<small>'+ response.responseJSON.errors.email+'</small>');
                         }else{
                             $(".invalid-feedback-email").html('');
+                        }
+                        if(response.responseJSON.errors.phone_number){
+                            $(".invalid-feedback-phone").html('<small>'+ response.responseJSON.errors.phone_number+'</small>');
+                        }else{
+                            $(".invalid-feedback-phone").html('');
+                        }
+                        if(response.responseJSON.errors.home_address){
+                            $(".invalid-feedback-homeaddress").html('<small>'+ response.responseJSON.errors.home_address+'</small>');
+                        }else{
+                            $(".invalid-feedback-homeaddress").html('');
                         }
                         if(response.responseJSON.errors.staff_role){
                             $(".invalid-feedback-staffrole").html('<small>'+ response.responseJSON.errors.staff_role+'</small>');
