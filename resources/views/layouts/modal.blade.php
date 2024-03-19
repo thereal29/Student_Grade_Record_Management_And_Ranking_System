@@ -7,6 +7,8 @@
         <div class="modal-body">
         @if(auth()->user()->role == 'Super Administrator' || auth()->user()->role == 'Administrator')
         <form action="{{ route('admin.dashboard') }}" class="form-horizontal" method="POST">
+        @elseif(auth()->user()->role == 'Honors and Awards Committee' || auth()->user()->role == 'Guidance Facilitator')
+        <form action="{{ route('staff.dashboard') }}" class="form-horizontal" method="POST">
         @else
         <form action="{{ action('App\Http\Controllers\TeacherController\DashboardController@index') }}" class="form-horizontal" method="POST">
         @endif
@@ -41,6 +43,8 @@
         <div class="modal-body">
         @if(auth()->user()->role == 'Super Administrator' || auth()->user()->role == 'Administrator')
         <form action="{{ route('admin.dashboard') }}" class="form-horizontal" method="POST">
+        @elseif(auth()->user()->role == 'Honors and Awards Committee' || auth()->user()->role == 'Guidance Facilitator')
+        <form action="{{ route('staff.dashboard') }}" class="form-horizontal" method="POST">
         @else
         <form action="{{ action('App\Http\Controllers\TeacherController\DashboardController@index') }}" class="form-horizontal" method="POST">
         @endif
@@ -262,7 +266,7 @@
         <div class="modal-btn">
             <div class="row">
                 <div class="col-6">
-                    <button type="submit" class="btn btn-primary paid-continue-btn edit_section">Update</button>
+                    <button type="submit" class="btn btn-primary paid-continue-btn update_section">Update</button>
                 </div>
                 <div class="col-6">
                     <button type="button" class="btn btn-primary paid-cancel-btn closeBTN" data-bs-dismiss="modal">Close</button>
@@ -340,7 +344,7 @@
 </div>
 
 @foreach($sy as $SY)
-    <!-- Edit School Year -->
+<!-- Edit School Year -->
 <div class="modal fade" id="editSY{{$SY->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -600,6 +604,109 @@
   </div>
 </div>
 
+<div class="modal fade" id="view_class_modal" role="dialog" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header p-2 view_class_modal_title" style="background-color: #05300e; color:#fff;">
+            </div>      
+            <div class="modal-body">
+                <div class="table-responsive viewClassTable" id="viewClassTable">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="input_grades_modal" role="dialog" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header p-2 input_grades_modal_title" style="background-color: #05300e; color:#fff;">
+            </div>      
+            <div class="modal-body">
+            <form action="#" id="submitGrades" class="form-horizontal" method="POST">
+            @csrf
+                <div class="table-responsive inputGradesTable" id="inputGradesTable">
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="submit" class="btn btn-primary"i><i class="fas fa-paper-plane"></i> Submit</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="view_grades_modal" role="dialog" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header p-2 view_grades_modal_title" style="background-color: #05300e; color:#fff;">
+            </div>      
+            <div class="modal-body">
+                <div class="table-responsive viewGradesTable" id="viewGradesTable">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="view_advisees_modal" role="dialog" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header p-2 view_advisees_modal_title" style="background-color: #05300e; color:#fff;">
+            </div>      
+            <div class="modal-body">
+                <div class="table-responsive viewAdviseesTable" id="viewAdviseesTable">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="grades_validation_modal" role="dialog" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header p-2 grades_validation_modal_title" style="background-color: #05300e; color:#fff;">
+            </div>      
+            <div class="modal-body">
+            <form action="#" id="validateGrades" class="form-horizontal" method="POST">
+            @csrf
+                <div class="table-responsive gradesValidationTable" id="gradesValidationTable">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary"i><i class="fas fa-check"></i> Validate</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="grades_validated_modal" role="dialog" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header p-2 grades_validated_modal_title" style="background-color: #05300e; color:#fff;">
+            </div>      
+            <div class="modal-body">
+                <div class="table-responsive gradesValidatedTable" id="gradesValidatedTable">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Edit Student User -->
 <div class="modal custom-modal fade" id="editstudentuser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -781,6 +888,7 @@
     </div>
   </div>
 </div>
+
 
 
 <!-- Add New Co Curricular Modal -->

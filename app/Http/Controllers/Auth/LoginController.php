@@ -72,17 +72,19 @@ class LoginController extends Controller
                     $facultyID = $faculty ?  $faculty->fid : 0; 
                     $student = StudentUser::select('*')->join('student_user_mapping', 'student_user_mapping.student_id', '=', 'student_personal_details.id')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->join('users', 'users.id', '=', 'student_user_mapping.user_id')->where('users.email', $input["email"])->first();
                     $class_advisoryCTR = ClassAdvisory::where('faculty_id', $facultyID)->count();
-                if(auth()->attempt(['email'=>$input["email"], 'password'=>$input["password"]])){
+                    if(auth()->attempt(['email'=>$input["email"], 'password'=>$input["password"]])){
                     if(auth()->user()->role == 'Super Administrator' || auth()->user()->role == 'Administrator'){
                         Session::put('firstname', $faculty->firstname);
                         Session::put('lastname', $faculty->lastname);
                         Session::put('avatar', $faculty->avatar);
                         Toastr::success('Login successfully :)','Success');
                         return redirect()->route('admin.dashboard')->with('alert-success', 'You are now logged in.');// this route is for the System Administrators
-                    }else if(auth()->user()->role == 'Honors and Awards Committee'){
-                        return redirect()->route('honors_committee.dashboard')->with('alert-success', 'You are now logged in.');// this route is for the Honors and Awards Committee
-                    }else if(auth()->user()->role == 'Guidance Facilitator'){
-                        return redirect()->route('guidance_facilitator.dashboard')->with('alert-success', 'You are now logged in.');// this route is for the Guidance Facilitator
+                    }else if(auth()->user()->role == 'Honors and Awards Committee' || auth()->user()->role == 'Guidance Facilitator'){
+                        Session::put('firstname', $faculty->firstname);
+                        Session::put('lastname', $faculty->lastname);
+                        Session::put('avatar', $faculty->avatar);
+                        Toastr::success('Login successfully :)','Success');
+                        return redirect()->route('staff.dashboard')->with('alert-success', 'You are now logged in.');// this route is for the Honors and Awards Committee
                     }else if(auth()->user()->role == 'Faculty'){
                         Session::put('firstname', $faculty->firstname);
                         Session::put('lastname', $faculty->lastname);

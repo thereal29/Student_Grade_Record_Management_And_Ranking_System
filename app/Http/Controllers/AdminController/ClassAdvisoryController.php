@@ -66,7 +66,7 @@ class ClassAdvisoryController extends Controller
                                 <a id="'.$section->sid.'" title="Assign Faculty" class="btn btn-sm bg-danger-light edit_section">
                                     <i class="feather-edit"></i>
                                 </a>
-                                <a id="'.$section->sid.'" title="Delete Faculty" class="btn btn-sm bg-danger-light delete_section">
+                                <a id="'.$section->sid.'" value="'.$totalStud.'" title="Delete Faculty" class="btn btn-sm bg-danger-light delete_section">
                                     <i class="fe fe-trash-2"></i>
                                 </a>
                             </div>

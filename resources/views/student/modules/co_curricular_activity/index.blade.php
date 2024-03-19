@@ -65,7 +65,7 @@
                             <div class="row">
                                 <div class="col-auto text-end float-end ms-auto download-grp">
                                     <button id="resetBTN"class="btn btn-primary" type='reset'>Clear</button>
-                                    <button class="btn btn-primary float-right add_activity" type="submit">Save</button>
+                                    <button class="btn btn-primary float-right add_activity" type="submit">Add</button>
                                 </div>
                             </div>
                         </div>
@@ -98,7 +98,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 mt-0 mb-2">
+                                <div class="col-md-6 mt-3 mb-2">
                                     <div class="row">
                                         <div class="point col-md-12 bg-warning mb-3">
                                             <strong>Cumulative Points:  </strong>
@@ -107,9 +107,6 @@
                                         <div class="percentage col-md-12 bg-success">
                                             <strong>Percentage (10%):</strong>
                                             <small>0 %</small>
-                                        </div>
-                                        <div class="col-auto text-end float-end ms-auto download-grp mt-2 mb-3">
-                                        <button type="submit" class="btn btn-primary" style="background:#05300e; color:#fff;">Submit Activities</button>
                                         </div>
                                     </div>
                                 </div>
@@ -266,7 +263,7 @@
                   $('.point').html('<strong>Cumulative Points:  </strong><small>0 pts</small>'); 
                   $('.percentage').html('<strong>Percentage (10%):  </strong><small>0 %</small>'); 
                 }else{
-                  $('.point').html('<strong>Cumulative Points:  </strong><small>'+ response.point.sumTotal + ' pts</small>'); 
+                  $('.point').html('<strong>Cumulative Points:  </strong><small>'+ response.sum + ' pts</small>'); 
                   $('.percentage').html('<strong>Percentage (10%):  </strong><small>'+ response.percentage + ' %</small>');
                 }
               }else{
@@ -338,11 +335,17 @@
                       $('.fileerror').html('<small>'+response.errors.file+'</small>');
                     }
                     }
-                }
+                },error: function(response) {
+                Swal.fire(
+                    'Error!',
+                    'Error!',
+                    'error'
+                )
+              }
             });
 
         });
-        $(document).on('click', '.deleteIcon', function(e) {
+        $(document).on('click', '.delete_activity', function(e) {
         e.preventDefault();
         let id = $(this).attr('id');
         let csrf = '{{ csrf_token() }}';
@@ -371,6 +374,53 @@
                   'success'
                 )
                 fetchActivity();
+              },error: function(response) {
+                Swal.fire(
+                    'Error!',
+                    'Error!',
+                    'error'
+                )
+              }
+            });
+          }
+        })
+      });
+      
+      $(document).on('click', '.submit_activity', function(e) {
+        e.preventDefault();
+        let id = $(this).attr('id');
+        let csrf = '{{ csrf_token() }}';
+        Swal.fire({
+          title: 'Submission',
+          text: "Submit this Co Curricular Activity",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#05300e',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Submit'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+              url: '{{ route('submitActivities') }}',
+              method: 'post',
+              data: {
+                id: id,
+                _token: csrf
+              },
+              success: function(response) {
+                console.log(response);
+                Swal.fire(
+                  'Submission!',
+                  'Submitted Successfully.',
+                  'success'
+                )
+                fetchActivity();
+              },error: function(response) {
+                Swal.fire(
+                    'Error!',
+                    'Error!',
+                    'error'
+                )
               }
             });
           }

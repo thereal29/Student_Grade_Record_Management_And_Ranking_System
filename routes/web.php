@@ -116,7 +116,36 @@ Route::middleware(['auth', 'user-role:Super Administrator,Administrator'])->grou
         Route::get('edit-staff-user', 'edit')->name('editStaffUser');
         Route::post('update-staff-user', 'update')->name('updateStaffUser');
     });
+    Route::controller(App\Http\Controllers\AdminController\ValidationController::class)->group(function () {
+        Route::get('/admin/modules/validation/grades', 'grades_index')->name('admin.validation.grades');
+        Route::get('/admin/modules/validation/co_curricular_activity', 'co_curricular_activity_index')->name('admin.validation.co_curricular_activity');
+        Route::post('fetch-validation-grades', 'fetchStudentGrades');
+        Route::get('fetch-view-validation-grades', 'fetchViewGradesValidation');
+        Route::get('fetch-view-validated-grades', 'fetchViewGradesValidation');
+        Route::post('validate-grades', 'validateGrades')->name('validateGrades');
+    });
+    Route::controller(App\Http\Controllers\AdminController\CoCurricularController::class)->group(function () {
+        Route::post('fetch-validation-activity', 'fetchActivity');
+        Route::get('view-validation-activity/{id}', 'show')->name('view-validation-activity');
+        Route::post('validate-activity', 'validateActivity')->name('validateActivities');
+        Route::post('revert-activity', 'revertActivity')->name('revertActivities');
+    });
     
+});
+
+// ROUTES FOR SYSTEM STAFF
+Route::middleware(['auth', 'user-role:Honors and Awards Committee,Guidance Facilitator'])->group(function()
+{
+    Route::post('/staff/dashboard', 'App\Http\Controllers\StaffController\DashboardController@index')->name('staff.dashboard');
+    Route::get('/staff/dashboard', 'App\Http\Controllers\StaffController\DashboardController@index')->name('staff.dashboard');
+    Route::get('/staff/profile', 'App\Http\Controllers\StaffController\ProfileController@index')->name('staff.profile');
+    Route::controller(App\Http\Controllers\StaffController\ValidationController::class)->group(function () {
+        Route::get('/staff/modules/validation/co_curricular_activity', 'index')->name('staff.validation.co_curricular_activity');
+        Route::post('fetch-staff-validation-activity', 'fetchActivity');
+        Route::get('view-staff-validation-activity/{id}', 'show')->name('view-staff-validation-activity');
+        Route::post('validate-staff-activity', 'validateActivity')->name('staffValidateActivities');
+        Route::post('revert-staff-activity', 'revertActivity')->name('staffRevertActivities');
+    });
 });
 
 // ROUTES FOR TEACHERS(ADVISER/SUBJECT TEACHER)
@@ -125,6 +154,24 @@ Route::middleware(['auth', 'user-role:Faculty'])->group(function()
     Route::post('/faculty/dashboard', 'App\Http\Controllers\TeacherController\DashboardController@index')->name('faculty.dashboard');
     Route::get('/faculty/dashboard', 'App\Http\Controllers\TeacherController\DashboardController@index')->name('faculty.dashboard');
     Route::get('/faculty/profile', 'App\Http\Controllers\TeacherController\ProfileController@index')->name('faculty.profile');
+    Route::controller(App\Http\Controllers\TeacherController\TeacherPortalController::class)->group(function () {
+        Route::get('/faculty/portal', 'maincontent')->name('admin.teacher-portal');
+        Route::get('fetch-faculty-class', 'fetchClass')->name('fetchClass');
+        Route::get('fetch-faculty-advisees', 'fetchAdvisees')->name('fetchAdvisees');
+        Route::get('fetch-faculty-grades', 'fetchGrades')->name('fetchGrades');
+        Route::get('fetch-faculty-view-class', 'fetchViewClass')->name('fetchViewClass');
+        Route::get('fetch-faculty-input-grades', 'fetchInputGrades')->name('fetchInputGrades');
+        Route::get('fetch-faculty-view-grades', 'fetchInputGrades')->name('fetchViewGrades');
+        Route::get('fetch-view-advisees', 'fetchViewAdvisees')->name('fetchViewAdvisees');
+        Route::post('submit-grades', 'submitGrades')->name('submitGrades');
+    });
+    Route::controller(App\Http\Controllers\TeacherController\PrintableDocumentController::class)->group(function () {
+        Route::get('/faculty/class/pdf/{id}', 'generateClassPDF')->name('class.pdf');
+        Route::get('/faculty/advisees/pdf/{id}', 'generateAdviseesPDF')->name('advisees.pdf');
+    });
+    Route::controller(App\Http\Controllers\TeacherController\ExportController::class)->group(function () {
+        Route::get('/export-class/{id}', 'exportClassExcel')->name('class.excel');
+    });
 });
 
 // ROUTES FOR STUDENT USERS
@@ -142,9 +189,11 @@ Route::middleware(['auth', 'user-role:Junior High School Student,Senior High Sch
     Route::controller(App\Http\Controllers\StudentController\CoCurricularController::class)->group(function () {
         Route::get('/student/modules/co_curricular_activity', 'index')->name('student.co_curricular_activity');
         Route::post('fetch-activity', 'fetchActivity');
+        Route::post('submit-activity', 'submitActivity')->name('submitActivities');
         Route::delete('delete', 'delete')->name('deleteActivity');
         Route::post('add-activity', 'store');
         Route::get('edit-activity', 'edit')->name('editActivity');
+        Route::get('view-activity/{id}', 'show')->name('view-activity');
     });
     Route::get('getSubtypes/{id}', function ($id) {
       $subtypes = App\Models\CoCurricularSubType::where('parentID',$id)->get();

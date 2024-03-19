@@ -162,7 +162,7 @@
                                                     <thead class="student-thread">
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>LRN</th>
+                                                        <th>LRN Number</th>
                                                         <th>Name</th>
                                                         <th>Gender</th>
                                                         <th>Deficiency Status</th>

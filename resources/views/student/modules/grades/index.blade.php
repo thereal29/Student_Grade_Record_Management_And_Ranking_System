@@ -27,10 +27,6 @@
                                     <div class="col">
                                         <h3 class="page-title">Student Grades</h3>
                                     </div>
-                                    <div class="col-auto text-end float-end ms-auto download-grp">
-                                        <a href="#" class="btn btn-outline-primary me-2"><i class="fas fa-print"></i> Print</a>
-                                        <a href="" class="btn btn-primary"><i class="fas fa-plus"></i></a>
-                                    </div>
                                 </div>
                                 <div class="row pb-3" style="border-bottom:2px solid #5e8e44;">
                                     <div class="col-md-6">

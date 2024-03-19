@@ -63,14 +63,14 @@
                         <li><a href="#" class="">Character Evaluation</a></li>
                     </ul>
                 </li>
-                <li class="submenu {{set_active([''])}}">
+                <li class="submenu {{set_active(['admin/modules/validation/grades', 'admin/modules/validation/co_curricular_activity'])}}">
                     <a class="linkmenu" href="#"><i class="fas fa-file-signature"></i>
                         <span>Validation</span>
                         <span class="menu-arrow"></span>
                     </a>
                     <ul>
-                        <li><a href="{{ route('admin/student_record') }}"  class="{{set_active([''])}}">Student Grades</a></li>
-                        <li><a href="{{ route('admin/student_record') }}"  class="{{set_active([''])}}">Co Curricular Activity</a></li>
+                        <li><a href="{{ route('admin.validation.grades') }}"  class="{{set_active(['admin/modules/validation/grades'])}}">Student Grades</a></li>
+                        <li><a href="{{ route('admin.validation.co_curricular_activity') }}"  class="{{set_active(['admin/modules/validation/co_curricular_activity'])}}">Co Curricular Activity</a></li>
                     </ul>
                 </li>
                 <li class="">
@@ -128,16 +128,10 @@
                         <span>Profile</span>
                     </a>
                 </li>
-                <li class="submenu {{set_active(['admin/modules/student', 'admin/modules/student/profile', 'admin/modules/student/record', 'admin/modules/student/view=record', 'admin/modules/student/subject', 'admin/modules/student/view=subject'])}} {{ (request()->is('admin/modules/student')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/profile')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/record')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/record')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/view=subject')) ? 'active' : '' }}">
-                    <a class="linkmenu" href="#"><i class="fas fa-chalkboard-teacher"></i>
+                <li class="{{set_active(['faculty/portal'])}} {{ (request()->is('admin/modules/student')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/profile')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/record')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/record')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/view=subject')) ? 'active' : '' }}">
+                    <a class="linkmenu" href="{{route('admin.teacher-portal')}}"><i class="fas fa-chalkboard-teacher"></i>
                         <span> Teacher's Portal</span>
-                        <span class="menu-arrow"></span>
                     </a>
-                    <ul>
-                    <li><a href="{{ route('admin/student_list') }}"  class="{{set_active(['admin/modules/student', 'admin/modules/student/profile'])}}">Student Advisory</a></li>
-                        <li><a href="{{ route('admin/student_record') }}"  class="{{set_active(['admin/modules/student/record', 'admin/modules/student/view=record'])}}">Student Records</a></li>
-                        <li><a href="{{ route('admin/student_subject') }}" class="{{set_active(['admin/modules/student/subject','admin/modules/student/view=subject'])}}">Classes Handled</a></li>
-                    </ul>
                 </li>
                 @if(Session::get('role') == 'Adviser')
                 <li class="{{set_active(['admin/modules/subject'])}}">
@@ -173,30 +167,81 @@
                         <span>Grades</span>
                     </a>
                 </li>
-                @if(Session::get('grade_level') == 'Grade 10' || Session::get('grade_level') == 'Grade 12')
-                <li class="{{set_active([''])}}">
+                    @if(Session::get('grade_level') == 'Grade 10' || Session::get('grade_level') == 'Grade 12')
+                    <li class="{{set_active([''])}}">
+                        <a class="linkmenu" href="#">
+                        <i class="fas fa-award"></i>
+                            <span>Honor Roll Ranking</span>
+                        </a>
+                    </li>
+                    @endif
+                    @if(auth()->user()->role == 'Junior High School Student')
+                    <li class="{{set_active(['student/modules/co_curricular_activity'])}}">
+                        <a class="linkmenu" href="{{ route('student.co_curricular_activity') }}">
+                        <i class="fas fa-shapes"></i>
+                            <span>Co Curricular Activity</span>
+                        </a>
+                    </li>
+                    @if(Session::get('grade_level') == 'Grade 10')
+                    <li class="{{set_active(['student/modules/character_evaluation'])}}">
+                        <a class="linkmenu" href="{{ route('student.co_curricular_activity') }}">
+                        <i class="fas fa-clipboard"></i>
+                            <span>Character Evaluation</span>
+                        </a>
+                    </li>
+                    @endif
+                @endif
+                @endif
+                @if(auth()->user()->role == 'Honors and Awards Committee' || auth()->user()->role == 'Guidance Facilitator')
+                <li class="{{set_active(['staff/dashboard'])}}">
+                    <a class="linkmenu" href="{{ route('staff.dashboard') }}">
+                    <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="{{set_active(['staff/profile'])}}">
+                    <a class="linkmenu" href="{{ route('staff.profile') }}">
+                    <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                @if(auth()->user()->role == 'Honors and Awards Committee')
+                <li class="submenu {{set_active(['admin/modules/student', 'admin/modules/student/profile', 'admin/modules/student/record', 'admin/modules/student/view=record', 'admin/modules/student/subject', 'admin/modules/student/view=subject'])}} {{ (request()->is('admin/modules/student')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/profile')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/record')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/record')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/view=subject')) ? 'active' : '' }}">
+                    <a class="linkmenu" href="#"><i class="fas fa-graduation-cap"></i>
+                        <span> Students</span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <ul>
+                    <li><a href="{{ route('admin/student_list') }}"  class="{{set_active(['admin/modules/student', 'admin/modules/student/profile'])}}">Student List</a></li>
+                        <li><a href="{{ route('admin/student_record') }}"  class="{{set_active(['admin/modules/student/record', 'admin/modules/student/view=record'])}}">Student Records</a></li>
+                    </ul>
+                </li>
+                <li class="{{set_active(['admin/modules/subject'])}}">
                     <a class="linkmenu" href="#">
                     <i class="fas fa-award"></i>
                         <span>Honor Roll Ranking</span>
                     </a>
                 </li>
                 @endif
-                @if(auth()->user()->role == 'Junior High School Student')
-                <li class="{{set_active(['student/modules/co_curricular_activity'])}}">
-                    <a class="linkmenu" href="{{ route('student.co_curricular_activity') }}">
-                    <i class="fas fa-shapes"></i>
-                        <span>Co Curricular Activity</span>
+                @if(auth()->user()->role == 'Guidance Facilitator')
+                <li class="submenu {{set_active(['staff/modules/validation/co_curricular_activity'])}}">
+                    <a class="linkmenu" href="#"><i class="fas fa-file-signature"></i>
+                        <span>Validation & Reports</span>
+                        <span class="menu-arrow"></span>
                     </a>
-                </li>
-                @if(Session::get('grade_level') == 'Grade 10')
-                <li class="{{set_active(['student/modules/character_evaluation'])}}">
-                    <a class="linkmenu" href="{{ route('student.co_curricular_activity') }}">
-                    <i class="fas fa-clipboard"></i>
-                        <span>Character Evaluation</span>
-                    </a>
+                    <ul>
+                        <li><a href="{{ route('staff.validation.co_curricular_activity') }}"  class="{{set_active(['staff/modules/validation/co_curricular_activity'])}}">Co Curricular Activity</a></li>
+                        <li><a href="{{ route('admin.validation.co_curricular_activity') }}"  class="{{set_active(['admin/modules/validation/co_curricular_activity'])}}">Character Evaluation Ratings</a></li>
+                        <li><a href="{{ route('admin.validation.co_curricular_activity') }}"  class="{{set_active(['admin/modules/validation/co_curricular_activity'])}}">Honor Roll Ranking Reports</a></li>
+                    </ul>
                 </li>
                 @endif
-                @endif
+                <li class="">
+                    <a class="text-muted"type="button" data-bs-toggle="modal" data-bs-target="#changeSY">
+                    <i class='fas fa-calendar-check'></i>
+                    <span>Change School Year</span>
+                    </a>
+                </li>
                 @endif
             </ul>
         </div>

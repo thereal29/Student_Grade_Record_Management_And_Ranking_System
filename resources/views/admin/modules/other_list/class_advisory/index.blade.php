@@ -116,36 +116,45 @@
                 $(document).on('click', '.delete_section', function(e) {
                 e.preventDefault();
                 let id = $(this).attr('id');
+                let totalStud = $(this).attr('value');
                 let csrf = '{{ csrf_token() }}';
-                Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to retrieve this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#05300e',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                    url: '{{ route('deleteSection') }}',
-                    method: 'delete',
-                    data: {
-                        id: id,
-                        _token: csrf
-                    },
-                    success: function(response) {
-                        console.log(response);
-                        Swal.fire(
-                        'Deleted!',
-                        'Subject  has been deleted.',
-                        'success'
-                        )
-                        fetchSection();
+                if(totalStud == 0){
+                    Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to retrieve this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#05300e',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                        url: '{{ route('deleteSection') }}',
+                        method: 'delete',
+                        data: {
+                            id: id,
+                            _token: csrf
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            Swal.fire(
+                            'Deleted!',
+                            'Subject  has been deleted.',
+                            'success'
+                            )
+                            fetchSection();
+                        }
+                        });
                     }
-                    });
+                })   
+                }else{
+                    Swal.fire({
+                    title: 'Restricted',
+                    text: "You won't be able to delete this!",
+                    icon: 'info',
+                    })
                 }
-                })
             });
 
                     function fetchSection(){

@@ -16,7 +16,7 @@ class RecordController extends Controller
         return view('admin.modules.students.records.index', compact('student'));
     }
     public function viewRecord(Request $request){
-        $record = StudentUser::select('*','student_personal_details.id AS studID','student_personal_details.firstname AS fnameStud', 'student_personal_details.middlename AS mnameStud', 'student_personal_details.lastname AS lnameStud', 'subject.grade_level as sgrade_level')->leftJoin('student_subject', 'student_subject.student_id', '=', 'student_personal_details.id')->leftJoin('grades_per_subject', 'grades_per_subject.student_subject_id', '=', 'student_subject.id')->leftJoin('subject', 'subject.id', '=', 'student_subject.subject_id')->leftJoin('student_advisory', 'student_advisory.student_id', '=', 'student_personal_details.id')->leftJoin('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'student_advisory.adviser_id')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->where('student_personal_details.id', $request->id)->first();
+        $record = StudentUser::select('*','student_personal_details.id AS studID','student_personal_details.firstname AS fnameStud', 'student_personal_details.middlename AS mnameStud', 'student_personal_details.lastname AS lnameStud', 'subject.grade_level as sgrade_level')->leftJoin('student_subject', 'student_subject.student_id', '=', 'student_personal_details.id')->leftJoin('grades_per_subject', 'grades_per_subject.student_subject_id', '=', 'student_subject.id')->leftJoin('subject', 'subject.id', '=', 'student_subject.subject_id')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->leftJoin('class_advisory', 'class_advisory.glevel_section_id', 'student_gradelevel_section.id')->leftJoin('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class_advisory.faculty_id')->where('student_personal_details.id', $request->id)->first();
         return view('admin.modules.students.records.view_record', compact('record'));
     }
     public function fetchRecord(Request $request){
@@ -60,15 +60,15 @@ class RecordController extends Controller
                             }else{
                                 $query .= '<td>None</td>';
                             }
-                            $query .= '<td style="width: 6%; text-align:center;">'. $student->firstQ .'</td>
-                            <td style="width: 6%; text-align:center;">'. $student->secondQ .'</td>
-                            <td style="width: 6%; text-align:center;">'. $student->thirdQ .'</td>
-                            <td style="width: 6%; text-align:center;">'. $student->fourthQ .'</td>';
-                            if($final_rating == 0){
+                            $query .= '<td style="width: 6%; text-align:center;">'. $student->firstQ .'<div><small class="text-muted" style="text-transform: uppercase; font-style: italic;">'.$student->statusFirstQ.'</small></div></td>
+                            <td style="width: 6%; text-align:center;">'. $student->secondQ .'<div><small class="text-muted" style="text-transform: uppercase; font-style: italic;">'.$student->statusSecondQ.'</small></div></td>
+                            <td style="width: 6%; text-align:center;">'. $student->thirdQ .'<div><small class="text-muted" style="text-transform: uppercase; font-style: italic;">'.$student->statusThirdQ.'</small></div></td>
+                            <td style="width: 6%; text-align:center;">'. $student->fourthQ .'<div><small class="text-muted" style="text-transform: uppercase; font-style: italic;">'.$student->statusFourthQ.'</small></div></td>';
+                            if($final_rating == 0  || $student->statusFourthQ == 'Pending'){
                                 $query .= '<td style="width: 6%; text-align:center; font-weight:bold; color:blue; background-color: #FFFBC8;"></td>
-                                            <td style="width: 5%; text-align:center; font-weight:bold; color:#b3b3b3; background-color: #D6EEEE;">TO BE ENCODED</td>';
+                                            <td style="width: 5%; text-align:center; font-weight:bold; color:#b3b3b3; background-color: #D6EEEE;"></td>';
                             }else{
-                                $query .= '<td style="width: 6%; text-align:center; font-weight:bold; color:blue; background-color: #FFFBC8;">'. $final_rating .'</td>';
+                                $query .= '<td style="width: 6%; text-align:center; font-weight:bold; color:#05300e; background-color: #FFFBC8;">'. $final_rating .'</td>';
                                 if($final_rating < 75){
                                 $query .= '<td style="width: 5%; text-align:center; font-weight:bold; color:red; background-color: #D6EEEE;">FAILED</td>';
                                 }else{

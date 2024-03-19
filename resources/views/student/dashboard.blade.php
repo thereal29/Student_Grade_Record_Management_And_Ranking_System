@@ -21,7 +21,7 @@
         </div>
 
         <div class="row mb-5">
-            <div class="col-md-4 col-sm-6 col-6">
+            <div class="col-xl-4 col-sm-4 col-12 mt-3">
                 <div class="circle-tile ">
                     <div class="tile-heading text-center">
                         <strong>Deficiency Status</strong>
@@ -31,13 +31,27 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-4 col-sm-6 col-6">
+            <div class="col-xl-4 col-sm-4 col-12 mt-3">
                 <div class="circle-tile ">
                     <div class="tile-heading text-center">
                         <strong>Co Curricular Activity Status</strong>
                     </div>
                     <div class="tile-content">
                     <div class="tile-description"> Initialized but not yet submitted</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-sm-4 col-12 mt-3">
+                <div class="circle-tile ">
+                    <div class="tile-heading text-center">
+                        <strong>Honor Candidates</strong>
+                    </div>
+                    <div class="tile-content">
+                        @if($ctr == 0)
+                        <div class="tile-description"> Yes! You have no grades < 80 </div>
+                        @else
+                        <div class="tile-description"> No! You have {{$ctr}} grades < 80</div>
+                        @endif
                     </div>
                 </div>
             </div>

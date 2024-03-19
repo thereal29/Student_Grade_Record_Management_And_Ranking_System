@@ -12,12 +12,24 @@ class Grade extends Model
     public $timestamps = false;
     protected $fillable = [
         'id',
-        'student_id',
-        'subject_id',
-        'sy_id',
+        'student_subject_id',
+        'grade_level',
         'firstQ',
+        'statusFirstQ',
+        'date_submitted_firstQ',
+        'date_approved_firstQ',
         'secondQ',
+        'statusSecondQ',
+        'date_submitted_secondQ',
+        'date_approved_secondQ',
         'thirdQ',
+        'statusThirdQ',
+        'date_submitted_thirdQ',
+        'date_approved_thirdQ',
         'fourthQ',
+        'statusFourthQ',
+        'date_submitted_fourthQ',
+        'date_approved_fourthQ',
+        'cumulative_gpa',
     ];
 }

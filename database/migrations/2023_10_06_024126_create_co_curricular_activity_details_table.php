@@ -24,6 +24,8 @@ return new class extends Migration
             $table->float('partialtotalPoints',8,2);
             $table->string('proof')->nullable();
             $table->string('grade_level')->references('grade_level')->on('student_personal_details');
+            $table->foreignId('sy_id');
+            $table->foreign('sy_id')->references('id')->on('school_year');
             $table->timestamps();
         });
     }

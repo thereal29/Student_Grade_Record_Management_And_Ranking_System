@@ -21,9 +21,6 @@ class GradesController extends Controller
         }else{
             $students = StudentUser::select('*', 'student_personal_details.firstname AS sfname', 'student_personal_details.lastname AS slname', 'student_personal_details.gender AS sgender')->join('student_subject', 'student_subject.student_id', '=', 'student_personal_details.id')->join('subject', 'subject.id', '=', 'student_subject.subject_id')->leftJoin('class', 'class.subject_id', '=', 'subject.id')->leftJoin('faculty_staff_personal_details', 'faculty_staff_personal_details.id', '=', 'class.faculty_id')->leftJoin('grades_per_subject', 'grades_per_subject.student_subject_id', '=', 'student_subject.id')->join('student_user_mapping', 'student_user_mapping.student_id', '=', 'student_personal_details.id')->join('users', 'users.id', '=', 'student_user_mapping.user_id')->where('student_user_mapping.user_id', $user_id)->get();
         }
-        foreach($students as $student){
-        $final_rating = ($student->firstQ + $student->secondQ + $student->thirdQ + $student->fourthQ)/4 ;
-        }
         $query = '';
         if($students->count() > 0){
             $query .= '<table class="table border-0 star-student table-hover table-center mb-0 datatables table-striped">
@@ -54,16 +51,36 @@ class GradesController extends Controller
                             <td>'. $student->subject_code .'&nbsp | &nbsp'. $student->subject_description .'</td>
                             <td style="width: 6%; text-align:center;">'. $student->credits .'</td>
                             <td style="width: 20%; text-align:center;">'. $student->firstname.' '. $student->lastname .'</td>
-                            <td style="width: 6%; text-align:center;">'. $student->firstQ .'</td>
-                            <td style="width: 6%; text-align:center;">'. $student->secondQ .'</td>
-                            <td style="width: 6%; text-align:center;">'. $student->thirdQ .'</td>
-                            <td style="width: 6%; text-align:center;">'. $student->fourthQ .'</td>';
-                            if($final_rating == 0){
-                                $query .= '<td style="width: 6%; text-align:center; font-weight:bold; color:blue; background-color: #FFFBC8;"></td>
-                                            <td style="width: 5%; text-align:center; font-weight:bold; color:#b3b3b3; background-color: #D6EEEE;">TO BE ENCODED</td>';
+                            <td style="width: 6%; text-align:center;">'. $student->firstQ ;
+                            if($student->statusFirstQ == 'Approved'){
+                                $query .='</td>';
                             }else{
-                                $query .= '<td style="width: 6%; text-align:center; font-weight:bold; color:blue; background-color: #FFFBC8;">'. $final_rating .'</td>';
-                                if($final_rating < 75){
+                                $query .='<div><small class="text-muted" style="text-transform: uppercase; font-style: italic;">'.$student->statusFirstQ.'</small></div></td>';
+                            }
+                            $query .='<td style="width: 6%; text-align:center;">'. $student->secondQ;
+                            if($student->statusSecondQ == 'Approved'){
+                                $query .='</td>';
+                            }else{
+                                $query .='<div><small class="text-muted" style="text-transform: uppercase; font-style: italic;">'.$student->statusSecondQ.'</small></div></td>';
+                            }
+                            $query .= '<td style="width: 6%; text-align:center;">'. $student->thirdQ;
+                            if($student->statusThirdQ == 'Approved'){
+                                $query .='</td>';
+                            }else{
+                                $query .='<div><small class="text-muted" style="text-transform: uppercase; font-style: italic;">'.$student->statusThirdQ.'</small></div></td>';
+                            }
+                            $query .= '<td style="width: 6%; text-align:center;">'. $student->fourthQ;
+                            if($student->statusFourthQ == 'Approved'){
+                                $query .='</td>';
+                            }else{
+                                $query .='<div><small class="text-muted" style="text-transform: uppercase; font-style: italic;">'.$student->statusFourthQ.'</small></div></td>';
+                            }
+                            if($student->fourthQ == null || $student->statusFourthQ == 'Pending'){
+                                $query .= '<td style="width: 6%; text-align:center; font-weight:bold; color:blue; background-color: #FFFBC8;"></td>
+                                            <td style="width: 5%; text-align:center; font-weight:bold; color:#b3b3b3; background-color: #D6EEEE;"></td>';
+                            }else{
+                                $query .= '<td style="width: 6%; text-align:center; font-weight:bold; color:#05300e; background-color: #FFFBC8;">'. $student->cumulative_gpa .'</td>';
+                                if($student->cumulative_gpa < 75){
                                 $query .= '<td style="width: 5%; text-align:center; font-weight:bold; color:red; background-color: #D6EEEE;">FAILED</td>';
                                 }else{
                                 $query .= '<td style="width: 5%; text-align:center; font-weight:bold; color:green; background-color: #D6EEEE;">PASSED</td>';

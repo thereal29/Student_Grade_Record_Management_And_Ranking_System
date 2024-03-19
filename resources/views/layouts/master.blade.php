@@ -157,7 +157,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css
                 <li class="nav-item dropdown has-arrow new-user-menus">
                     <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                         <span class="user-img">
-                            @if(auth()->user()->role == 'Super Administrator' || auth()->user()->role == 'Administrator')
+                            @if(auth()->user()->role == 'Super Administrator' || auth()->user()->role == 'Administrator' || auth()->user()->role == 'Honors and Awards Committee' || auth()->user()->role == 'Guidance Facilitator')
                             <img class="rounded-circle" src="{{ Storage::url('admin-photos/'.Session::get('avatar')) }}" width="31"alt="{{ Session::get('name') }}">
                             @elseif(auth()->user()->role == 'Faculty')
                             <img class="rounded-circle" src="{{ Storage::url('faculty-photos/'.Session::get('avatar')) }}" width="31"alt="{{ Session::get('name') }}">
@@ -173,7 +173,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css
                     <div class="dropdown-menu">
                         <div class="user-header">
                             <div class="avatar avatar-sm">
-                            @if(auth()->user()->role == 'Super Administrator' || auth()->user()->role == 'Administrator')
+                            @if(auth()->user()->role == 'Super Administrator' || auth()->user()->role == 'Administrator' || auth()->user()->role == 'Honors and Awards Committee' || auth()->user()->role == 'Guidance Facilitator')
                                 <img class="rounded-circle" src="{{ Storage::url('admin-photos/'.Session::get('avatar')) }}" width="31"alt="{{ Session::get('name') }}">
                                 @elseif(auth()->user()->role == 'Faculty')
                                 <img class="rounded-circle" src="{{ Storage::url('faculty-photos/'.Session::get('avatar')) }}" width="31"alt="{{ Session::get('name') }}">
@@ -228,7 +228,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js
      href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
    />
    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-    @if( (Session::has('alert-success')) && (auth()->user()->role == 'Super Administrator' || auth()->user()->role == 'Administrator' || auth()->user()->role == 'Faculty'))
+    @if( (Session::has('alert-success')) && (auth()->user()->role == 'Super Administrator' || auth()->user()->role == 'Administrator' || auth()->user()->role == 'Faculty' || auth()->user()->role == 'Honors and Awards Committee' || auth()->user()->role == 'Guidance Facilitator'))
    <script type="text/javascript">
       $(document).ready(function() {
         $('#school_year').modal('show');
