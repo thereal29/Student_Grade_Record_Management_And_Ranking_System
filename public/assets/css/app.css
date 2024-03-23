@@ -142,4 +142,78 @@ input[type=number] {
 .db-icon img{
   width: 60px !important;
 }
+textarea {
+  overflow: auto;
+  resize: vertical;
+}
+
+fieldset {
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+legend {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  margin-bottom: .5rem;
+  font-size: 1.5rem;
+  line-height: inherit;
+  color: inherit;
+  white-space: normal;
+}
+
+input[type='radio'] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #05300e;
+  border-radius: 50%;
+  outline: none;
+  box-shadow: 0 0 5px #05300e;
+  transition: box-shadow 0.3s ease;
+}
+
+input[type='radio']:before {
+  content: '';
+  display: block;
+  width: 70%;
+  height: 70%;
+  margin: 15% auto;
+  border-radius: 50%;
+}
+
+input[type='radio']:checked:before {
+  background: #05300e;
+}
+
+.text {
+  position: relative;
+  width: 50%;
+  font-size: 16px;
+}
+
+.left {
+left: 0;
+}
+
+.right {
+right: 0;
+}
+.left strong {
+      display:block;
+      margin: 5px;
+      font-size: clamp( .9rem, 1vw, .8vh);/* Adjust the spacing between the h3 elements */
+}
+.right strong {
+      display:block;
+      margin: 5px; 
+      font-size: clamp( .9rem, 1vw, .8vh);/* Adjust the spacing between the h3 elements */
+}
+table.dataTable thead:after {
+  display: none !important;
+}
 

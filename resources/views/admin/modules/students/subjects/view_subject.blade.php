@@ -9,7 +9,7 @@
                         <div class="page-sub-header">
                             <h3 class="page-title">Student Subjects</h3>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ route('admin/subject') }}">Student Subjects</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('admin/student_subject') }}">Student Subjects</a></li>
                                 <li class="breadcrumb-item active">Added Subjects</li>
                             </ul>
                         </div>
@@ -25,7 +25,7 @@
                             <div class="page-header">
                                 <div class="row pb-3" style="border-bottom:2px solid #5e8e44;">
                                     <div class="col-auto text-end float-end ms-auto download-grp">
-                                        <a class="btn btn-primary" href="{{ route('admin/subject') }}"> Back</a>
+                                        <a class="btn btn-primary" href="{{ route('admin/student_subject') }}"> Back</a>
                                     </div>
                                     <div class="col-md-12 mt-4">
                                     <strong>LRN Number: </strong>
@@ -53,8 +53,6 @@
                                             <th>Subject Code</th>
                                             <th>Course Description</th>
                                             <th>Credits</th>
-                                            <th>Status</th>
-                                            <th class="text-end" >Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -63,22 +61,6 @@
                                             <td>{{$subjects->subject_code}}</td>
                                             <td>{{$subjects->subject_description}}</td>
                                             <td>{{$subjects->credits}}</td>
-                                            <td><div class="badge badge-success" style="font-size:14px;">{{$subjects->status}}</div></td>
-                                            <td class="text-end">
-                                                @if($subjects->status != 'Approved')
-                                                <div class="actions" style="text-align: center;">
-                                                    <a href="" class="btn btn-sm bg-danger-light approval">
-                                                        <i class="feather-edit"></i>
-                                                    </a>
-                                                    <a class="btn btn-sm bg-danger-light delete" data-bs-toggle="modal" data-bs-target="#delete">
-                                                        <i class="fe fe-trash-2"></i>
-                                                    </a>
-                                                </div>
-                                                @else
-                                                <div class="actions" style="text-align: center;">
-                                                </div>
-                                                @endif
-                                            </td>
                                         </tr>
                                         @endforeach
                                     </tbody>

@@ -19,13 +19,13 @@ class DashboardController extends Controller
         
         foreach($students as $student){
             $ctr = 0;
-        $stud_subj = StudentSubjects::where('student_id', $student->sid)->get();
-        foreach($stud_subj as $temp){
-            $ctr += Grade::where('student_subject_id', $temp->id)->where('firstQ', '<', 80)->count();
-            $ctr += Grade::where('student_subject_id', $temp->id)->where('secondQ', '<', 80)->count();
-            $ctr += Grade::where('student_subject_id', $temp->id)->where('thirdQ', '<', 80)->count();
-            $ctr += Grade::where('student_subject_id', $temp->id)->where('fourthQ', '<', 80)->count();
-        }
+            $stud_subj = StudentSubjects::select('*', 'student_subject.id as sid')->join('grades_per_subject', 'grades_per_subject.student_subject_id', '=', 'student_subject.id')->where('grades_per_subject.statusFirstQ', 'Approved')->where('grades_per_subject.statusSecondQ', 'Approved')->where('grades_per_subject.statusThirdQ', 'Approved')->where('grades_per_subject.statusFourthQ', 'Approved')->where('student_subject.student_id', $student->sid)->get();
+            foreach($stud_subj as $temp){
+                $ctr += Grade::where('student_subject_id', $temp->sid)->where('firstQ', '<', 80)->count();
+                $ctr += Grade::where('student_subject_id', $temp->sid)->where('secondQ', '<', 80)->count();
+                $ctr += Grade::where('student_subject_id', $temp->sid)->where('thirdQ', '<', 80)->count();
+                $ctr += Grade::where('student_subject_id', $temp->sid)->where('fourthQ', '<', 80)->count();
+            }
     }
         return view('student.dashboard', compact('ctr'));
     }

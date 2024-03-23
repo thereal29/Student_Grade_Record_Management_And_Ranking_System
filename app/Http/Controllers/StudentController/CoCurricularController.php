@@ -64,13 +64,13 @@ class CoCurricularController extends Controller
             $query .= '<table class="table border-0 star-student table-hover table-center mb-0 datatables table-striped">
             <thead class="student-thread">
                 <tr>
-                    <th>Type of Activity</th>
-                    <th>Category</th>
-                    <th>Awards/Scope</th>
-                    <th>Points</th>
-                    <th>Status</th>
-                    <th>Proof</th>
-                    <th>Action</th>
+                    <th class="no-sort">Type of Activity</th>
+                    <th class="no-sort">Category</th>
+                    <th class="no-sort">Awards/Scope</th>
+                    <th class="no-sort">Points</th>
+                    <th class="no-sort">Status</th>
+                    <th class="no-sort">Proof</th>
+                    <th class="no-sort">Action</th>
 
                 </tr>
             </thead>

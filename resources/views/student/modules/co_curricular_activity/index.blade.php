@@ -98,7 +98,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 mt-3 mb-2">
+                                <div class="col-md-6 mt-3 mb-3">
                                     <div class="row">
                                         <div class="point col-md-12 bg-warning mb-3">
                                             <strong>Cumulative Points:  </strong>
@@ -272,6 +272,10 @@
               if ($('.datatables').length > 0) {
                         $('.datatables').DataTable({
                             "bFilter": true,
+                            "columnDefs": [ {
+                              "targets": 'no-sort', // Add the class 'no-sort' to the columns you want to disable sorting for
+                              "orderable": false
+                          } ]
                         });
               }
           }

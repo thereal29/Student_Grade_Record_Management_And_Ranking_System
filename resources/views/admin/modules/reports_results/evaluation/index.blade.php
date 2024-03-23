@@ -26,7 +26,7 @@
                                         <h3 class="page-title">Character Evaluations</h3>
                                     </div>
                                     <div class="col-auto text-end float-end ms-auto download-grp">
-                                        <button id=""  class="btn btn-primary add_new_evaluation"><i class="fas fa-plus"></i></button>
+                                        <button id="" class="btn btn-primary add_new_evaluation"><i class="fas fa-plus"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
         function fetchEvaluation(){
                 $.ajax({
                 type: "get",
-                url: "/fetch-staff-character-evaluation",
+                url: "/fetch-character-evaluation",
                 data: {
                     "_token": "{{ csrf_token() }}"
                 },
@@ -80,26 +80,11 @@
                     }
                 });
         }
-        $(document).on('click', '.add_new_evaluation', function(e) {
-            e.preventDefault();
-            let id = $(this).attr('id');
-            if(id == null){
-                $('#addnewevaluation').modal('show');
-                fetchEvaluation();
-            }else{
-                Swal.fire(
-                    'One Default Character Evaluation Per School Year',
-                    'Add School Year First',
-                    'info'
-                )
-            }
-            
-        });
         $("#addEvaluation").submit(function(e) {
             e.preventDefault();
             var fd = $(this).serialize();
             $.ajax({
-            url: '{{ route('staffAddEvaluation') }}',
+            url: '{{ route('addEvaluation') }}',
             method: 'post',
             data: fd,
             dataType: 'json',
@@ -123,6 +108,21 @@
             }
             });
         });
+        $(document).on('click', '.add_new_evaluation', function(e) {
+            e.preventDefault();
+            let id = $(this).attr('id');
+            if(id == null){
+                $('#addnewevaluation').modal('show');
+                fetchEvaluation();
+            }else{
+                Swal.fire(
+                    'One Default Character Evaluation Per School Year',
+                    'Add School Year First',
+                    'info'
+                )
+            }
+            
+        });
 
         $(document).on('click', '.delete_evaluation', function(e) {
             e.preventDefault();
@@ -139,7 +139,7 @@
             }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                url: '{{ route('staffDeleteEvaluation') }}',
+                url: '{{ route('deleteEvaluation') }}',
                 method: 'delete',
                 data: {
                     id: id,

@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{ URL::to('assets/plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ URL::to('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ URL::to('assets/css/app.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.css"/> 
     <link href="
 https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css
 " rel="stylesheet">
@@ -216,8 +217,13 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css
     <script src="{{ URL::to('assets/plugins/moment/moment.min.js') }}"></script>
     <script src="{{ URL::to('assets/js/bootstrap-datetimepicker.min.js') }}"></script>
     <script src="{{ URL::to('assets/plugins/datatables/datatables.min.js') }}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     <script src="{{ URL::to('assets/plugins/select2/js/select2.min.js') }}"></script>
     <script src="{{ URL::to('assets/js/script.js') }}"></script>
+    
+ 
     <script src="
 https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js
 "></script>
@@ -275,6 +281,10 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js
     $('.normselect2').select2();
     $('.normselect2').select2({
         'placeholder' : 'Select Class Advisory',
+    });
+    $('.student-select').select2();
+    $('.student-select').select2({
+        'placeholder' : 'Select Student',
     });
     $('.syselect1').select2();
     $('.syselect1').select2({

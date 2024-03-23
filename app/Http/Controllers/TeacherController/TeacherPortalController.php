@@ -148,9 +148,9 @@ class TeacherPortalController extends Controller
                     </button>';
                 }else if($class->statusFirstQ == 'Pending' && $class->statusSecondQ == 'Pending' && $class->statusThirdQ == 'Pending' && $class->statusFourthQ == 'Pending'){
                     $query .= '<td style="width: 20% !important; white-space: normal !important;"><strong>For Validation: </strong>'.$class->from_year.' - '.$class->to_year.' 1st, 2nd, 3rd, & 4th Quarter Grades</td>
-                    <td style="width: 10% !important;"><button id="'.$class->cid.'" class="btn btn-sm bg-danger-light view_grades d-flex">
+                    <td style="width: 10% !important;"><button id="'.$class->cid.'" class="btn btn-sm bg-danger-light input_grades d-flex">
                     <div class="badge badge-success" style="font-size:14px;">
-                        <i class="fas fa-eye"></i> View Grades
+                        <i class="feather-edit"></i> Input Grades
                         </div>
                     </button>';
                 }else if($class->statusFirstQ == 'Approved' && $class->statusSecondQ == 'Pending' && $class->statusThirdQ == 'To Be Encoded' && $class->statusFourthQ == 'To Be Encoded'){
@@ -169,9 +169,9 @@ class TeacherPortalController extends Controller
                     </button>';
                 }else if($class->statusFirstQ == 'Approved' && $class->statusSecondQ == 'Approved' && $class->statusThirdQ == 'Approved' && $class->statusFourthQ == 'Pending'){
                     $query .= '<td style="width: 20% !important;white-space: normal !important;"><strong>For Validation: </strong>'.$class->from_year.' - '.$class->to_year.' 4th Quarter Grades</td>
-                    <td style="width: 10% !important;"><button id="'.$class->cid.'" class="btn btn-sm bg-danger-light view_grades d-flex">
+                    <td style="width: 10% !important;"><button id="'.$class->cid.'" class="btn btn-sm bg-danger-light input_grades d-flex">
                     <div class="badge badge-success" style="font-size:14px;">
-                        <i class="fas fa-eye"></i> View Grades
+                        <i class="feather-edit"></i> Input Grades
                         </div>
                     </button>';
                 }else if($class->statusFirstQ == null && $class->statusSecondQ == null && $class->statusThirdQ == null && $class->statusFourthQ == null){
@@ -300,11 +300,12 @@ class TeacherPortalController extends Controller
                 <td style="width: 10% !important;">'.$class->lrn_number.'</td>
                 <td style="width: 20% !important;">'.$class->firstname.' '.$class->lastname.'</td>';
                 if($class->firstQ != null){
-                    $query .= '<td style="width: 10% !important; text-align:center;"><input id="firstQ" value="'. $class->firstQ .'" class="form-control" name="firstQ[]" hidden><strong style="font-size:14px; color:#05300e">'.$class->firstQ.' % </strong>';
                     if($class->statusFirstQ == 'Pending'){
-                        $query .='<div class="badge badge-warning" style="font-size:10px; text-transform: uppercase; font-style: italic;">'.$class->statusFirstQ.'</div></td>';
+                        $query .= '<td style="width: 10% !important; text-align:center;"><input id="firstQ" value="'. $class->firstQ .'" class="form-control" name="firstQ[]" required>
+                        <div class="badge badge-warning" style="font-size:10px; text-transform: uppercase; font-style: italic;">'.$class->statusFirstQ.'</div></td>';
                     }else{
-                        $query .='<div class="badge badge-success" style="font-size:10px; text-transform: uppercase; font-style: italic;">'.$class->statusFirstQ.'</div></td>';
+                        $query .= '<td style="width: 10% !important; text-align:center;"><input id="firstQ" value="'. $class->firstQ .'" class="form-control" name="firstQ[]" hidden><strong style="font-size:14px; color:#05300e">'.$class->firstQ.' % </strong>
+                        <div class="badge badge-success" style="font-size:10px; text-transform: uppercase; font-style: italic;">'.$class->statusFirstQ.'</div></td>';
                     }
                 }else{
                     if($currSY->quarter == '1st Quarter' || $currSY->quarter == '2nd Quarter' || $currSY->quarter == '3rd Quarter' || $currSY->quarter == '4th Quarter'){
@@ -314,11 +315,12 @@ class TeacherPortalController extends Controller
                     }
                 }
                 if($class->secondQ != null){
-                    $query .= '<td style="width: 10% !important; text-align:center;"><input id="secondQ" value="'. $class->secondQ .'" class="form-control" name="secondQ[]" hidden><strong style="font-size:14px; color:#05300e">'.$class->secondQ.' % </strong>';
                     if($class->statusSecondQ == 'Pending'){
-                        $query .='<div class="badge badge-warning" style="font-size:10px; text-transform: uppercase; font-style: italic;">'.$class->statusSecondQ.'</div></td>';
+                        $query .= '<td style="width: 10% !important; text-align:center;"><input id="secondQ" value="'. $class->secondQ .'" class="form-control" name="secondQ[]" required>
+                        <div class="badge badge-warning" style="font-size:10px; text-transform: uppercase; font-style: italic;">'.$class->statusSecondQ.'</div></td>';
                     }else{
-                        $query .='<div class="badge badge-success" style="font-size:10px; text-transform: uppercase; font-style: italic;">'.$class->statusSecondQ.'</div></td>';
+                        $query .= '<td style="width: 10% !important; text-align:center;"><input id="secondQ" value="'. $class->secondQ .'" class="form-control" name="secondQ[]" hidden><strong style="font-size:14px; color:#05300e">'.$class->secondQ.' % </strong>
+                        <div class="badge badge-success" style="font-size:10px; text-transform: uppercase; font-style: italic;">'.$class->statusSecondQ.'</div></td>';
                     }
                 }else{
                     if($currSY->quarter == '2nd Quarter' || $currSY->quarter == '3rd Quarter' || $currSY->quarter == '4th Quarter'){
@@ -328,11 +330,12 @@ class TeacherPortalController extends Controller
                     }
                 }
                 if($class->thirdQ != null){
-                    $query .= '<td style="width: 10% !important; text-align:center;"><input id="thirdQ" value="'. $class->thirdQ .'" class="form-control" name="thirdQ[]" hidden><strong style="font-size:14px; color:#05300e">'.$class->thirdQ.' % </strong>';
                     if($class->statusThirdQ == 'Pending'){
-                        $query .='<div class="badge badge-warning" style="font-size:10px; text-transform: uppercase; font-style: italic;">'.$class->statusThirdQ.'</div></td>';
+                        $query .= '<td style="width: 10% !important; text-align:center;"><input id="thirdQ" value="'. $class->thirdQ .'" class="form-control" name="thirdQ[]" required>
+                        <div class="badge badge-warning" style="font-size:10px; text-transform: uppercase; font-style: italic;">'.$class->statusThirdQ.'</div></td>';
                     }else{
-                        $query .='<div class="badge badge-success" style="font-size:10px; text-transform: uppercase; font-style: italic;">'.$class->statusThirdQ.'</div></td>';
+                        $query .= '<td style="width: 10% !important; text-align:center;"><input id="thirdQ" value="'. $class->thirdQ .'" class="form-control" name="thirdQ[]" hidden><strong style="font-size:14px; color:#05300e">'.$class->thirdQ.' % </strong>
+                        <div class="badge badge-success" style="font-size:10px; text-transform: uppercase; font-style: italic;">'.$class->statusThirdQ.'</div></td>';
                     }
                 }else{
                     if($currSY->quarter == '3rd Quarter' || $currSY->quarter == '4th Quarter'){
@@ -342,11 +345,12 @@ class TeacherPortalController extends Controller
                     }
                 }
                 if($class->fourthQ != null){
-                    $query .= '<td style="width: 10% !important; text-align:center;"><input id="fourthQ" value="'. $class->fourthQ .'" class="form-control" name="fourthQ[]" hidden><strong style="font-size:14px; color:#05300e">'.$class->fourthQ.' % </strong>';
                     if($class->statusFourthQ == 'Pending'){
-                        $query .='<div class="badge badge-warning" style="font-size:10px; text-transform: uppercase; font-style: italic;">'.$class->statusFourthQ.'</div></td>';
+                        $query .= '<td style="width: 10% !important; text-align:center;"><input id="fourthQ" value="'. $class->fourthQ .'" class="form-control" name="fourthQ[]" required>
+                        <div class="badge badge-warning" style="font-size:10px; text-transform: uppercase; font-style: italic;">'.$class->statusFourthQ.'</div></td>';
                     }else{
-                        $query .='<div class="badge badge-success" style="font-size:10px; text-transform: uppercase; font-style: italic;">'.$class->statusFourthQ.'</div></td>';
+                        $query .= '<td style="width: 10% !important; text-align:center;"><input id="fourthQ" value="'. $class->fourthQ .'" class="form-control" name="fourthQ[]" hidden><strong style="font-size:14px; color:#05300e">'.$class->fourthQ.' % </strong>
+                        <div class="badge badge-success" style="font-size:10px; text-transform: uppercase; font-style: italic;">'.$class->statusFourthQ.'</div></td>';
                     }
                 }else{
                     if($currSY->quarter == '4th Quarter'){
@@ -465,19 +469,19 @@ class TeacherPortalController extends Controller
                     <th>Name</th>
                     <th>Gender</th>
                     <th>Deficiency Status</th>
-                    <th class="text-end">Honors Candidates</th>
+                    <th class="text-end">Honors Candidate</th>
                     <th class="text-end">Action</th>
                 </tr>
             </thead>
             <tbody>';
             foreach($class_advisory as $advisees){
                 $ctr = 0;
-        $stud_subj = StudentSubjects::where('student_id', $advisees->sid)->get();
+        $stud_subj = StudentSubjects::select('*', 'student_subject.id as sid')->join('grades_per_subject', 'grades_per_subject.student_subject_id', '=', 'student_subject.id')->where('grades_per_subject.statusFirstQ', 'Approved')->where('grades_per_subject.statusSecondQ', 'Approved')->where('grades_per_subject.statusThirdQ', 'Approved')->where('grades_per_subject.statusFourthQ', 'Approved')->where('student_subject.student_id', $advisees->sid)->get();
         foreach($stud_subj as $temp){
-            $ctr += Grade::where('student_subject_id', $temp->id)->where('firstQ', '<', 80)->count();
-            $ctr += Grade::where('student_subject_id', $temp->id)->where('secondQ', '<', 80)->count();
-            $ctr += Grade::where('student_subject_id', $temp->id)->where('thirdQ', '<', 80)->count();
-            $ctr += Grade::where('student_subject_id', $temp->id)->where('fourthQ', '<', 80)->count();
+            $ctr += Grade::where('student_subject_id', $temp->sid)->where('firstQ', '<', 80)->count();
+            $ctr += Grade::where('student_subject_id', $temp->sid)->where('secondQ', '<', 80)->count();
+            $ctr += Grade::where('student_subject_id', $temp->sid)->where('thirdQ', '<', 80)->count();
+            $ctr += Grade::where('student_subject_id', $temp->sid)->where('fourthQ', '<', 80)->count();
         }
                 $query .= '<tr>
                 <td>'.$advisees->lrn_number.'</td>

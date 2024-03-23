@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Data</title>
+    <title>Class Data</title>
+    <link rel="shortcut icon" href="{{ URL::to('assets/img/favicon.png') }}">
     <!-- Include any necessary stylesheets -->
     <style>
         /* Customize table styles as needed */

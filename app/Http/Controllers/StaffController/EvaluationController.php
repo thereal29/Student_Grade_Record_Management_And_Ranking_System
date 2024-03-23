@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\AdminController;
+namespace App\Http\Controllers\StaffController;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Evaluation;
 use App\Models\EvaluationIndicator;
 use App\Models\SchoolYear;
-use App\Models\StudentUser;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -15,15 +14,24 @@ class EvaluationController extends Controller
 {
     public function maincontent(){
         $evaluationList = DB::table('character_evaluation')->select('*','character_evaluation.id AS eid')->leftJoin('character_evaluation_indicator', 'character_evaluation.id', '=', 'character_evaluation_indicator.eval_id')->leftJoin('school_year', 'school_year.id', '=', 'character_evaluation.sy_id')->groupBy(['eid'])->get();
-        $evaluationTemp = DB::table('character_evaluation')->select('*')->leftJoin('character_evaluation_indicator', 'character_evaluation.id', '=', 'character_evaluation_indicator.eval_id')->leftJoin('school_year', 'school_year.id', '=', 'character_evaluation.sy_id')->first();
+        $evaluationTemp = DB::table('character_evaluation')->select('*','character_evaluation.id AS eid')->leftJoin('character_evaluation_indicator', 'character_evaluation.id', '=', 'character_evaluation_indicator.eval_id')->leftJoin('school_year', 'school_year.id', '=', 'character_evaluation.sy_id')->first();
         $currentSY = DB::table('school_year')->select('*')->where('isCurrent', 1)->first();
         if($evaluationTemp != null){
-            $existSY = DB::table('character_evaluation')->select('*')->where('sy_id', 'LIKE', $evaluationTemp->sy_id)->get();
+            $existSY = DB::table('character_evaluation')->select('*', 'character_evaluation.id AS eid')->where('sy_id', 'LIKE', $evaluationTemp->sy_id)->get();
             
         }else{
             $existSY = null;
         }
-        return view('admin.modules.reports_results.evaluation.index', compact('evaluationList', 'currentSY', 'existSY'));
+        return view('staff.modules.reports.evaluation.index', compact('evaluationList', 'currentSY', 'existSY'));
+    }
+    public function checkEval(){
+        $id = $request->id;
+        $evaluation = Evaluation::find($id);
+        $ctr=$evaluation->count();
+        return response()->json([
+            'status'=>'success',
+            'ctr' => $ctr
+        ]);
     }
     public function fetchEvaluation(Request $request){
         $adviser = $request->adviser;
@@ -51,7 +59,7 @@ class EvaluationController extends Controller
                 </tr>
             </thead>
             <tbody>';
-            foreach($evaluationList as $key=> $evaluation){
+            foreach($evaluationList as $key=>$evaluation){
                 $query .= '<tr>
                 <td>'.++$key.'</td>
                 <td><div class="badge badge-warning"style="font-size:14px;">'.$evaluation->from_year.' - '.$evaluation->to_year.'</div></td>';
@@ -125,7 +133,7 @@ class EvaluationController extends Controller
     }
     public function updateEval(Request $request){
         $evaluation = DB::table('character_evaluation')->select('*')->leftJoin('character_evaluation_indicator', 'character_evaluation.id', '=', 'character_evaluation_indicator.eval_id')->leftJoin('school_year', 'school_year.id', '=', 'character_evaluation.sy_id')->where('character_evaluation.id', $request->id)->first();
-        return view('admin.character_evaluation_update', compact('evaluation'));
+        return view('staff.character_evaluation_update', compact('evaluation'));
     }
     public function deleteEval(Request $request){
         $id = $request->id;
@@ -139,7 +147,7 @@ class EvaluationController extends Controller
         $currentSY = DB::table('school_year')->select('*')->where('isCurrent', 1)->first();
         $SY = DB::table('character_evaluation')->select('*')->leftJoin('character_evaluation_indicator', 'character_evaluation.id', '=', 'character_evaluation_indicator.eval_id')->leftJoin('school_year', 'school_year.id', '=', 'character_evaluation.sy_id')->where('character_evaluation.id', $request->id)->first();
         $question = DB::table('character_evaluation_indicator')->select('*','character_evaluation_indicator.id AS indID', 'character_evaluation.id AS eid')->leftJoin('character_evaluation', 'character_evaluation_indicator.eval_id', '=', 'character_evaluation.id')->where('character_evaluation_indicator.eval_id', $request->id)->get();     
-        return view('admin.modules.reports_results.evaluation.manage_questions', compact('question','SY', 'currentSY'));
+        return view('staff.modules.reports.evaluation.manage_questions', compact('question','SY', 'currentSY'));
     }
     public function addQuestion(Request $request){
         if($request->input('formID') == null){
@@ -221,62 +229,19 @@ class EvaluationController extends Controller
         EvaluationIndicator::destroy($id);
     }
     public function sort(Request $request)
-    {
-        $questions = EvaluationIndicator::all();
+ {
+     $questions = EvaluationIndicator::all();
 
-        foreach ($questions as $question) {
-            foreach ($request->order as $order) {
-                if ($order['id'] == $question->id) {
-                    $question->order = $order['position'];
-                    $question->update();
-                }
-            }
-        }
-        return response()->json([
-            'status'=>'success'
-        ]);
-    }
-    public function resultsIndex(Request $request){
-        $students = StudentUser::select('*','student_personal_details.id as sid', 'student_personal_details.firstname as sfname', 'student_personal_details.lastname as slname')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->join('student_user_mapping', 'student_user_mapping.student_id', '=', 'student_personal_details.id')->join('users', 'users.id', '=', 'student_user_mapping.user_id')->join('school_year', 'school_year.id', '=', 'users.sy_id')->where('student_gradelevel_section.grade_level', 'Grade 10')->get();
-        return view('admin.modules.reports_results.evaluation.results', compact('students'));
-    }
-
-    public function fetchResults(Request $request){
-        $id = $request->get('id');
-        $students = StudentUser::select('*','student_personal_details.id as sid', 'student_personal_details.firstname as sfname', 'student_personal_details.lastname as slname')->join('student_gradelevel_section', 'student_gradelevel_section.id', '=', 'student_personal_details.glevel_section_id')->join('student_user_mapping', 'student_user_mapping.student_id', '=', 'student_personal_details.id')->join('users', 'users.id', '=', 'student_user_mapping.user_id')->join('school_year', 'school_year.id', '=', 'users.sy_id')->where('student_gradelevel_section.grade_level', 'Grade 10')->get();
-        $question = DB::table('character_evaluation_indicator')->select('*','character_evaluation_indicator.id AS indID', 'character_evaluation.id AS eid')->leftJoin('character_evaluation', 'character_evaluation_indicator.eval_id', '=', 'character_evaluation.id')->where('character_evaluation_indicator.eval_id', $id)->orderBy('order')->get();
-        $query = '';
-        if($question->count() !=0){
-            $query = '<table class="table border-0 table-striped table-condensed">
-            <thead class="student-thread">
-                <tr>
-                    <th style="width: 50% !important;">Indicator/Description</th>
-                    <th class="text-center">5</th>
-                    <th class="text-center">4</th>
-                    <th class="text-center">3</th>
-                    <th class="text-center">2</th>
-                    <th class="text-center">1</th>
-                </tr>
-            </thead>
-            <tbody>';
-        foreach($question as $questionList){
-            $query .= '<tr class="row1" data-id="'.$questionList->indID.'">
-                <td style="width: 50% !important; white-space: normal !important;">'.$questionList->description.'</td>
-                <td class="text-center"><input type="radio" id="'.$questionList->indID.'_1" name="ans_eval_'.$questionList->indID.'" value="1"></td>
-                <td class="text-center"><input type="radio" id="'.$questionList->indID.'_2" name="ans_eval_'.$questionList->indID.'" value="2"></td>
-                <td class="text-center"><input type="radio" id="'.$questionList->indID.'_3" name="ans_eval_'.$questionList->indID.'" value="3"></td>
-                <td class="text-center"><input type="radio" id="'.$questionList->indID.'_4" name="ans_eval_'.$questionList->indID.'" value="4"></td>
-                <td class="text-center"><input type="radio" id="'.$questionList->indID.'_5" name="ans_eval_'.$questionList->indID.'" value="5"></td>
-            </tr>';
-        }
-        $query .= '</tbody></table>';
-    }else{
-        $query = '<h5 class="text-center text-secondary my-4">No data found</h5>';
-    }
-        return response()->json([
-            'status'=>'success',
-            'query'=> $query,
-            'students' => $students
-        ]);
-    }
+     foreach ($questions as $question) {
+         foreach ($request->order as $order) {
+             if ($order['id'] == $question->id) {
+                $question->order = $order['position'];
+                 $question->update();
+             }
+         }
+     }
+     return response()->json([
+        'status'=>'success'
+    ]);
+ }
 }

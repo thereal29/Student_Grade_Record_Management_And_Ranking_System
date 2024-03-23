@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('eval_id');
             $table->foreign('eval_id')->references('id')->on('character_evaluation');
             $table->string('description');
+            $table->integer('order')->default(0)->nullable();
             $table->timestamps();
         });
     }

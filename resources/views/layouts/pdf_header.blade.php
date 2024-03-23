@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF Header</title>
+    <link rel="shortcut icon" href="{{ URL::to('assets/img/favicon.png') }}">
     <style>
         /* Customize header styles as needed */
         

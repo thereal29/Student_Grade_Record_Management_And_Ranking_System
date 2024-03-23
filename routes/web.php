@@ -76,6 +76,21 @@ Route::middleware(['auth', 'user-role:Super Administrator,Administrator'])->grou
         Route::post('fetch-student-registration', 'fetchStudentRegistration');
         Route::get('/admin/modules/student/view=subject', 'viewStudentSubjects')->name('admin/view_subject');
     });
+    Route::controller(App\Http\Controllers\AdminController\EvaluationController::class)->group(function () {
+        Route::get('/admin/modules/character_evaluation', 'maincontent')->name('admin.character_evaluation');
+        Route::get('fetch-character-evaluation', 'fetchEvaluation');
+        Route::post('add-character-evaluation', 'addEval')->name('addEvaluation');
+        Route::get('/admin/modules/character_evaluation/manage', 'manageQ')->name('admin.manage-character_evaluation');
+        
+        Route::get('/admin/modules/character_evaluation/results', 'resultsIndex')->name('admin.results-character_evaluation');
+        Route::post('fetch-character-evaluation-questions', 'fetchQuestions');
+        Route::post('add-character-evaluation-questions', 'addQuestion')->name('addQuestions');
+        Route::get('edit-question', 'edit')->name('editQuestions');
+        Route::delete('delete-question', 'delete')->name('deleteQuestion');
+        Route::delete('delete-evaluation', 'deleteEval')->name('deleteEvaluation');
+        Route::post('question-sortable', 'sort');
+        Route::post('fetch-character-evaluation-result', 'fetchResults');
+    });
     Route::controller(App\Http\Controllers\AdminController\FacultyController::class)->group(function () {
         Route::get('/admin/modules/faculty', 'index')->name('admin/faculty');
         Route::get('/admin/modules/view=faculty', 'viewFacData')->name('admin/view_faculty');
@@ -99,7 +114,7 @@ Route::middleware(['auth', 'user-role:Super Administrator,Administrator'])->grou
     Route::get('getSection/{gradelevel}', function ($gradelevel) {
         $gradelevels = App\Models\GradeSection::where('grade_level',$gradelevel)->get();
         return response()->json($gradelevels);
-      });
+    });
     Route::controller(App\Http\Controllers\AdminController\UserFacultyController::class)->group(function () {
         Route::get('/admin/modules/users/faculty', 'index')->name('admin.faculty-user');
         Route::post('fetch-faculty-user', 'fetchUser');
@@ -146,6 +161,27 @@ Route::middleware(['auth', 'user-role:Honors and Awards Committee,Guidance Facil
         Route::post('validate-staff-activity', 'validateActivity')->name('staffValidateActivities');
         Route::post('revert-staff-activity', 'revertActivity')->name('staffRevertActivities');
     });
+    Route::controller(App\Http\Controllers\StaffController\StudentController::class)->group(function () {
+        Route::get('/staff/modules/student', 'index')->name('staff/student_list');
+        Route::get('/staff/modules/student/profile', 'viewProfile')->name('staff/student_profile');
+        Route::post('fetch-staff-students', 'fetchStudents');
+        Route::get('/staff/modules/student/view=record', 'viewRecord')->name('staff/view_record');
+        Route::post('fetch-staff-record', 'fetchRecord');
+    });
+    Route::controller(App\Http\Controllers\StaffController\EvaluationController::class)->group(function () {
+        Route::get('/staff/modules/character_evaluation', 'maincontent')->name('staff.character_evaluation');
+        Route::get('fetch-staff-character-evaluation', 'fetchEvaluation');
+        Route::post('add-staff-character-evaluation', 'addEval')->name('staffAddEvaluation');
+        Route::get('/staff/modules/character_evaluation/manage', 'manageQ')->name('staff.manage-character_evaluation');
+        Route::get('/staff/modules/character_evaluation/results', 'resultsIndex')->name('staff.results-character_evaluation');
+        Route::post('fetch-staff-character-evaluation-questions', 'fetchQuestions');
+        Route::post('add-staff-character-evaluation-questions', 'addQuestion')->name('staffAddQuestions');
+        Route::get('edit-staff-question', 'edit')->name('staffEditQuestions');
+        Route::delete('delete-staff-question', 'delete')->name('staffDeleteQuestion');
+        Route::delete('delete-staff-evaluation', 'deleteEval')->name('staffDeleteEvaluation');
+        Route::post('question-staff-sortable', 'sort');
+        Route::get('check-staff-evaluation', 'checkEval')->name('checkEvaluation');
+    });
 });
 
 // ROUTES FOR TEACHERS(ADVISER/SUBJECT TEACHER)
@@ -184,6 +220,10 @@ Route::middleware(['auth', 'user-role:Junior High School Student,Senior High Sch
     Route::controller(App\Http\Controllers\StudentController\GradesController::class)->group(function () {
         Route::get('/student/modules/grades', 'index')->name('student.grades');
         Route::post('fetch-grades', 'fetchGrades');
+    });
+    Route::controller(App\Http\Controllers\StudentController\EvaluationController::class)->group(function () {
+        Route::get('/student/modules/character_evaluation', 'maincontent')->name('student.character_evaluation');
+        Route::post('fetch-student-character-evaluation-questions', 'fetchQuestions');
     });
 
     Route::controller(App\Http\Controllers\StudentController\CoCurricularController::class)->group(function () {

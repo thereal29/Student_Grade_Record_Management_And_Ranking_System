@@ -26,7 +26,7 @@
                     </a>
                     <ul>
                     <li><a href="{{ route('admin/student_list') }}"  class="{{set_active(['admin/modules/student', 'admin/modules/student/profile'])}}">Student List</a></li>
-                        <li><a href="{{ route('admin/student_record') }}"  class="{{set_active(['admin/modules/student/record', 'admin/modules/student/view=record'])}}">Student Records</a></li>
+                        <li><a  class="{{set_active(['admin/modules/student/record', 'admin/modules/student/view=record'])}}">Student Records</a></li>
                         <li><a href="{{ route('admin/student_subject') }}" class="{{set_active(['admin/modules/student/subject','admin/modules/student/view=subject'])}}">Student Subjects</a></li>
                     </ul>
                 </li>
@@ -51,7 +51,7 @@
                         <li><a href="{{ route('admin/class_advisory_list') }}"  class="{{set_active(['admin/modules/class_advisory'])}}">Class Advisory</a></li>
                     </ul>
                 </li>
-                <li class="submenu {{set_active([''])}}">
+                <li class="submenu {{set_active(['admin/modules/character_evaluation', 'admin/modules/character_evaluation/manage', 'admin/modules/character_evaluation/results'])}}">
                     <a class="linkmenu" href="#"><i class="fas fa-clipboard"></i>
                         <span>Reports & Results</span>
                         <span class="menu-arrow"></span>
@@ -60,7 +60,7 @@
                         <li><a href="{{ route('admin/student_record') }}"  class="{{set_active([''])}}">Honor Roll Reports</a></li>
                         <li><a href="{{ route('admin/student_record') }}"  class="{{set_active([''])}}">Promotion Candidates</a></li>
                         <li><a href="{{ route('admin/student_record') }}"  class="{{set_active([''])}}">Co Curricular Activity</a></li>
-                        <li><a href="#" class="">Character Evaluation</a></li>
+                        <li><a href="{{ route('admin.character_evaluation')}}" class="{{set_active(['admin/modules/character_evaluation', 'admin/modules/character_evaluation/manage', 'admin/modules/character_evaluation/results'])}}">Character Evaluation</a></li>
                     </ul>
                 </li>
                 <li class="submenu {{set_active(['admin/modules/validation/grades', 'admin/modules/validation/co_curricular_activity'])}}">
@@ -184,7 +184,7 @@
                     </li>
                     @if(Session::get('grade_level') == 'Grade 10')
                     <li class="{{set_active(['student/modules/character_evaluation'])}}">
-                        <a class="linkmenu" href="{{ route('student.co_curricular_activity') }}">
+                        <a class="linkmenu" href="{{ route('student.character_evaluation') }}">
                         <i class="fas fa-clipboard"></i>
                             <span>Character Evaluation</span>
                         </a>
@@ -206,32 +206,32 @@
                     </a>
                 </li>
                 @if(auth()->user()->role == 'Honors and Awards Committee')
-                <li class="submenu {{set_active(['admin/modules/student', 'admin/modules/student/profile', 'admin/modules/student/record', 'admin/modules/student/view=record', 'admin/modules/student/subject', 'admin/modules/student/view=subject'])}} {{ (request()->is('admin/modules/student')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/profile')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/record')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/record')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/view=subject')) ? 'active' : '' }}">
+                <li class="submenu {{set_active(['staff/modules/student', 'staff/modules/student/profile', 'staff/modules/student/record', 'staff/modules/student/view=record'])}} {{ (request()->is('admin/modules/student')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/profile')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/record')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/record')) ? 'active' : '' }} {{ (request()->is('admin/modules/student/view=subject')) ? 'active' : '' }}">
                     <a class="linkmenu" href="#"><i class="fas fa-graduation-cap"></i>
                         <span> Students</span>
                         <span class="menu-arrow"></span>
                     </a>
                     <ul>
-                    <li><a href="{{ route('admin/student_list') }}"  class="{{set_active(['admin/modules/student', 'admin/modules/student/profile'])}}">Student List</a></li>
-                        <li><a href="{{ route('admin/student_record') }}"  class="{{set_active(['admin/modules/student/record', 'admin/modules/student/view=record'])}}">Student Records</a></li>
+                    <li><a href="{{ route('staff/student_list') }}"  class="{{set_active(['staff/modules/student', 'staff/modules/student/profile'])}}">Student List</a></li>
+                        <li><a class="{{set_active(['staff/modules/student/record', 'staff/modules/student/view=record'])}}">Student Records</a></li>
                     </ul>
                 </li>
                 <li class="{{set_active(['admin/modules/subject'])}}">
                     <a class="linkmenu" href="#">
-                    <i class="fas fa-award"></i>
+                        <i class="fas fa-award"></i>
                         <span>Honor Roll Ranking</span>
                     </a>
                 </li>
                 @endif
                 @if(auth()->user()->role == 'Guidance Facilitator')
-                <li class="submenu {{set_active(['staff/modules/validation/co_curricular_activity'])}}">
+                <li class="submenu {{set_active(['staff/modules/validation/co_curricular_activity', 'staff/modules/character_evaluation', 'staff/modules/character_evaluation/manage'])}}">
                     <a class="linkmenu" href="#"><i class="fas fa-file-signature"></i>
                         <span>Validation & Reports</span>
                         <span class="menu-arrow"></span>
                     </a>
                     <ul>
                         <li><a href="{{ route('staff.validation.co_curricular_activity') }}"  class="{{set_active(['staff/modules/validation/co_curricular_activity'])}}">Co Curricular Activity</a></li>
-                        <li><a href="{{ route('admin.validation.co_curricular_activity') }}"  class="{{set_active(['admin/modules/validation/co_curricular_activity'])}}">Character Evaluation Ratings</a></li>
+                        <li><a href="{{ route('staff.character_evaluation')}}" class="{{set_active(['staff/modules/character_evaluation', 'staff/modules/character_evaluation/manage'])}}">Character Evaluation</a></li>
                         <li><a href="{{ route('admin.validation.co_curricular_activity') }}"  class="{{set_active(['admin/modules/validation/co_curricular_activity'])}}">Honor Roll Ranking Reports</a></li>
                     </ul>
                 </li>

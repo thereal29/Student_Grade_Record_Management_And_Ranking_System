@@ -343,6 +343,36 @@
   </div>
 </div>
 
+<!-- Add New Character Evaluation -->
+<div class="modal custom-modal fade" id="addnewevaluation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header p-2" style="background-color: #05300e; color:#fff;">
+            <h5 class="modal-title" style="color:#fff;" id="exampleModalLabel">Class Advisory Details</h5>
+        </div>
+      
+      <div class="modal-body">
+      <form action="" id="addEvaluation" class="form-horizontal" method="POST">
+      @csrf
+            <label class="col-xs-5 control-label" for="school_year"> Are you sure to add New Student's Character Evaluation?</label>
+            <input id="currentSYid" class="form-control" name="currentSYid" value="{{$currSY->id}}" hidden>
+      </div>
+      <div class="modal-footer">
+      <div class="row">
+                <div class="col-6">
+                    <button type="button" class="btn btn-primary paid-cancel-btn closeBTN" data-bs-dismiss="modal">Close</button>
+                </div>
+                <div class="col-6">
+                    <button type="submit" class="btn btn-primary paid-continue-btn add_section">Yes</button>
+                </div>
+            </div>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
 @foreach($sy as $SY)
 <!-- Edit School Year -->
 <div class="modal fade" id="editSY{{$SY->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
